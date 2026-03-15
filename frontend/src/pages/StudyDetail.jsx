@@ -1092,14 +1092,14 @@ export default function StudyDetail() {
                   <p className="mt-1 font-medium">{study.phase}</p>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">IRB Dates</Label>
+                  <Label className="text-muted-foreground">IRB Approval Period</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm">{new Date(study.irbApprovalDate).toLocaleDateString()} - {new Date(study.irbExpiryDate).toLocaleDateString()}</p>
                     <Badge className={`${irbExpiry.color} border-0 text-xs`}>{irbExpiry.text}</Badge>
                   </div>
                 </div>
                 <div>
-                  <Label className="text-muted-foreground">Grant Period</Label>
+                  <Label className="text-muted-foreground">Grant Approval Period</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm">{new Date(study.grantStartDate).toLocaleDateString()} - {new Date(study.grantEndDate).toLocaleDateString()}</p>
                     <Badge className={`${grantExpiry.color} border-0 text-xs`}>{grantExpiry.text}</Badge>
