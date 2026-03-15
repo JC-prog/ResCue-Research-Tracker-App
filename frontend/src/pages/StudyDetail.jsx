@@ -1656,6 +1656,70 @@ export default function StudyDetail() {
         }}
         onConfirm={confirmChange}
       />
+
+      {/* Delete Study Confirmation */}
+      <AlertDialog open={deleteStudyOpen} onOpenChange={setDeleteStudyOpen}>
+        <AlertDialogContent data-testid="delete-study-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Study</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{study.shortTitle}"? This action cannot be undone and will remove all associated data including tasks, publications, and history.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteStudy}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              data-testid="confirm-delete-study-btn"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Task Confirmation */}
+      <AlertDialog open={deleteTaskOpen} onOpenChange={setDeleteTaskOpen}>
+        <AlertDialogContent data-testid="delete-task-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Task</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{taskToDelete?.title}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteTask}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Publication Confirmation */}
+      <AlertDialog open={deletePublicationOpen} onOpenChange={setDeletePublicationOpen}>
+        <AlertDialogContent data-testid="delete-publication-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Publication</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{publicationToDelete?.title}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeletePublication}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
