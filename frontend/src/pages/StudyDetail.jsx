@@ -1264,13 +1264,13 @@ export default function StudyDetail() {
                             cy="50%"
                             innerRadius={40}
                             outerRadius={70}
-                            label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                           >
                             {genderData.map((_, i) => (
                               <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                             ))}
                           </Pie>
-                          <Tooltip />
+                          <Tooltip formatter={(value, name) => [`${value} participants`, name]} />
+                          <Legend />
                         </PieChart>
                       </ResponsiveContainer>
                     </div>
@@ -1292,13 +1292,12 @@ export default function StudyDetail() {
                             cy="50%"
                             innerRadius={40}
                             outerRadius={70}
-                            label={({ name, percent }) => `${(percent * 100).toFixed(0)}%`}
                           >
                             {ethnicityData.map((_, i) => (
                               <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
                             ))}
                           </Pie>
-                          <Tooltip />
+                          <Tooltip formatter={(value, name) => [`${value} participants`, name]} />
                           <Legend />
                         </PieChart>
                       </ResponsiveContainer>
