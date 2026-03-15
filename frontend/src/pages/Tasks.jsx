@@ -13,6 +13,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../components/ui/alert-dialog';
 import { 
   Search, 
   Calendar, 
@@ -21,6 +31,7 @@ import {
   Clock,
   Trash2
 } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function Tasks() {
   const navigate = useNavigate();
@@ -30,6 +41,17 @@ export default function Tasks() {
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [deleteTaskOpen, setDeleteTaskOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  const handleDeleteTask = () => {
+    if (taskToDelete) {
+      deleteTask(taskToDelete.studyId, taskToDelete.id);
+      toast.success('Task deleted');
+      setTaskToDelete(null);
+    }
+    setDeleteTaskOpen(false);
+  };
 
   const filteredTasks = useMemo(() => {
     return allTasks
