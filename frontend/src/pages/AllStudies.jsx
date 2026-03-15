@@ -59,6 +59,21 @@ const StatusBadge = ({ status }) => {
   );
 };
 
+const getBudgetColor = (percentRemaining) => {
+  if (percentRemaining > 50) return 'text-green-600 dark:text-green-400';
+  if (percentRemaining > 20) return 'text-yellow-600 dark:text-yellow-400';
+  return 'text-red-600 dark:text-red-400';
+};
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount);
+};
+
 const StudyCard = ({ study, onClick, onDelete }) => {
   const totalEnrolled = study.recruitment.sites.reduce((sum, site) => sum + site.enrolled, 0);
   const enrollmentProgress = study.targetEnrollment > 0 
@@ -67,6 +82,8 @@ const StudyCard = ({ study, onClick, onDelete }) => {
   
   const totalBudget = study.fund.categories.reduce((sum, cat) => sum + cat.initial, 0);
   const usedBudget = study.fund.categories.reduce((sum, cat) => sum + cat.used, 0);
+  const remainingBudget = totalBudget - usedBudget;
+  const percentRemaining = totalBudget > 0 ? (remainingBudget / totalBudget) * 100 : 0;
   const budgetProgress = totalBudget > 0 ? (usedBudget / totalBudget) * 100 : 0;
 
   const handleDelete = (e) => {
@@ -119,8 +136,10 @@ const StudyCard = ({ study, onClick, onDelete }) => {
         
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-muted-foreground">Budget Used</span>
-            <span className="tabular-nums">{budgetProgress.toFixed(0)}%</span>
+            <span className="text-muted-foreground">Budget</span>
+            <span className={`tabular-nums font-medium ${getBudgetColor(percentRemaining)}`}>
+              {formatCurrency(remainingBudget)} left
+            </span>
           </div>
           <Progress value={budgetProgress} className="h-2" />
         </div>
