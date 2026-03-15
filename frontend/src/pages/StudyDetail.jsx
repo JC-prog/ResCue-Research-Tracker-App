@@ -1387,6 +1387,11 @@ export default function StudyDetail() {
           </CardHeader>
           <CollapsibleContent>
             <CardContent>
+              <div className="flex justify-end mb-4">
+                <Button onClick={() => setAddTaskOpen(true)} data-testid="add-task-btn">
+                  <Plus className="w-4 h-4 mr-2" /> Add Task
+                </Button>
+              </div>
               <div className="space-y-2">
                 {study.tasks
                   .sort((a, b) => {
@@ -1427,6 +1432,59 @@ export default function StudyDetail() {
                       </Button>
                     </div>
                   ))}
+                {study.tasks.length === 0 && (
+                  <p className="text-center text-muted-foreground py-4">No tasks yet. Add one above.</p>
+                )}
+              </div>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
+
+      {/* Publications Section */}
+      <Collapsible open={publicationsOpen} onOpenChange={setPublicationsOpen}>
+        <Card>
+          <CardHeader className="pb-3">
+            <CollapsibleTrigger className="flex items-center justify-between w-full" data-testid="toggle-publications">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-5 h-5 text-primary" />
+                <h3 className="text-lg font-semibold font-[Manrope]">Publications</h3>
+                <Badge variant="secondary" className="ml-2">
+                  {study.publications.length}
+                </Badge>
+              </div>
+              {publicationsOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            </CollapsibleTrigger>
+          </CardHeader>
+          <CollapsibleContent>
+            <CardContent>
+              <div className="flex justify-end mb-4">
+                <Button onClick={() => setAddPublicationOpen(true)} data-testid="add-publication-btn">
+                  <Plus className="w-4 h-4 mr-2" /> Add Publication
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {study.publications.map(pub => (
+                  <div key={pub.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">{pub.type}</Badge>
+                        <span className="font-medium truncate">{pub.title}</span>
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {new Date(pub.date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    {pub.link && (
+                      <Button variant="ghost" size="sm" onClick={() => window.open(pub.link, '_blank')}>
+                        <ExternalLink className="w-4 h-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+                {study.publications.length === 0 && (
+                  <p className="text-center text-muted-foreground py-4">No publications yet. Add one above.</p>
+                )}
               </div>
             </CardContent>
           </CollapsibleContent>
