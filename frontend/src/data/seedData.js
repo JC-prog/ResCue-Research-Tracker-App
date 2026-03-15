@@ -19,12 +19,11 @@ export const seedStudies = [
     tags: ['Chronic Disease', 'Digital Health', 'Medication Adherence'],
     fund: {
       grantBody: 'National Institutes of Health',
-      ioCode: 'IO-NIH-2024-3421',
       categories: [
-        { name: 'Manpower', initial: 150000, used: 89500 },
-        { name: 'Equipment', initial: 50000, used: 42000 },
-        { name: 'Consumables', initial: 30000, used: 18500 },
-        { name: 'Travel', initial: 20000, used: 8200 }
+        { name: 'Manpower', ioCode: 'IO-NIH-MP-3421', initial: 150000, used: 89500 },
+        { name: 'Equipment', ioCode: 'IO-NIH-EQ-3422', initial: 50000, used: 42000 },
+        { name: 'Miscellaneous', ioCode: 'IO-NIH-MS-3423', initial: 30000, used: 18500 },
+        { name: 'Travel', ioCode: 'IO-NIH-TR-3424', initial: 20000, used: 8200 }
       ]
     },
     recruitment: {
