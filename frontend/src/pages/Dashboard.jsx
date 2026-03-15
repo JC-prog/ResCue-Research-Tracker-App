@@ -128,8 +128,10 @@ export default function Dashboard() {
   
   const recentStudies = [...studies]
     .sort((a, b) => {
-      const statusOrder = { active: 0, pending: 1, 'on-hold': 2, completed: 3 };
-      return statusOrder[a.status] - statusOrder[b.status];
+      // Sort by lastOpened timestamp (most recent first)
+      const aTime = a.lastOpened ? new Date(a.lastOpened).getTime() : 0;
+      const bTime = b.lastOpened ? new Date(b.lastOpened).getTime() : 0;
+      return bTime - aTime;
     })
     .slice(0, 4);
 
