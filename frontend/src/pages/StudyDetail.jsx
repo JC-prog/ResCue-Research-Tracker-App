@@ -1213,60 +1213,70 @@ export default function StudyDetail() {
           </CardHeader>
           <CollapsibleContent>
             <CardContent>
-              {/* Total Summary */}
-              <div className={`p-4 rounded-lg mb-4 ${getBudgetBgColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
-                <div className="grid grid-cols-3 gap-4 text-center">
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Total Awarded</span>
-                    <span className="text-xl font-bold tabular-nums">{formatCurrency(totalBudget)}</span>
-                  </div>
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Total Used</span>
-                    <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(usedBudget)}</span>
-                  </div>
-                  <div>
-                    <span className="text-xs text-muted-foreground block mb-1">Total Remaining</span>
-                    <span className={`text-xl font-bold tabular-nums ${getBudgetColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
-                      {formatCurrency(totalBudget - usedBudget)}
-                    </span>
-                  </div>
+              {study.fund.grantBody === 'No Grant' || study.fund.categories.length === 0 ? (
+                <div className="p-8 text-center text-muted-foreground">
+                  <p className="text-lg font-medium">No Funds</p>
+                  <p className="text-sm mt-1">This study does not have any grant funding attached.</p>
                 </div>
-              </div>
-              
-              {/* Category Details */}
-              <div className="space-y-4">
-                {study.fund.categories.map((cat, i) => {
-                  const remaining = cat.initial - cat.used;
-                  const percentRemaining = cat.initial > 0 ? (remaining / cat.initial) * 100 : 0;
-                  const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
-                  return (
-                    <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <span className="font-medium">{cat.name}</span>
-                          <Badge variant="outline" className="font-mono text-xs">
-                            {cat.ioCode || 'No IO Code'}
-                          </Badge>
-                        </div>
-                        <span className="text-sm text-muted-foreground">
-                          Budget: {formatCurrency(cat.initial)}
+              ) : (
+                <>
+                  {/* Total Summary */}
+                  <div className={`p-4 rounded-lg mb-4 ${getBudgetBgColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Total Awarded</span>
+                        <span className="text-xl font-bold tabular-nums">{formatCurrency(totalBudget)}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Total Used</span>
+                        <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(usedBudget)}</span>
+                      </div>
+                      <div>
+                        <span className="text-xs text-muted-foreground block mb-1">Total Remaining</span>
+                        <span className={`text-xl font-bold tabular-nums ${getBudgetColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
+                          {formatCurrency(totalBudget - usedBudget)}
                         </span>
                       </div>
-                      <Progress value={percentUsed} className="h-3" />
-                      <div className="flex justify-between text-sm">
-                        <div className="flex gap-6">
-                          <span className="text-muted-foreground">
-                            Used: <span className="font-medium text-red-600 dark:text-red-400 tabular-nums">{formatCurrency(cat.used)}</span>
-                          </span>
-                          <span className={`font-medium ${getBudgetColor(percentRemaining)}`}>
-                            Remaining: <span className="tabular-nums">{formatCurrency(remaining)}</span>
-                          </span>
-                        </div>
-                        <span className="text-muted-foreground tabular-nums">{percentUsed.toFixed(0)}% used</span>
-                      </div>
                     </div>
-                  );
-                })}
+                  </div>
+                  
+                  {/* Category Details */}
+                  <div className="space-y-4">
+                    {study.fund.categories.map((cat, i) => {
+                      const remaining = cat.initial - cat.used;
+                      const percentRemaining = cat.initial > 0 ? (remaining / cat.initial) * 100 : 0;
+                      const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
+                      return (
+                        <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <span className="font-medium">{cat.name}</span>
+                              <Badge variant="outline" className="font-mono text-xs">
+                                {cat.ioCode || 'No IO Code'}
+                              </Badge>
+                            </div>
+                            <span className="text-sm text-muted-foreground">
+                              Budget: {formatCurrency(cat.initial)}
+                            </span>
+                          </div>
+                          <Progress value={percentUsed} className="h-3" />
+                          <div className="flex justify-between text-sm">
+                            <div className="flex gap-6">
+                              <span className="text-muted-foreground">
+                                Used: <span className="font-medium text-red-600 dark:text-red-400 tabular-nums">{formatCurrency(cat.used)}</span>
+                              </span>
+                              <span className={`font-medium ${getBudgetColor(percentRemaining)}`}>
+                                Remaining: <span className="tabular-nums">{formatCurrency(remaining)}</span>
+                              </span>
+                            </div>
+                            <span className="text-muted-foreground tabular-nums">{percentUsed.toFixed(0)}% used</span>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
               </div>
             </CardContent>
           </CollapsibleContent>
