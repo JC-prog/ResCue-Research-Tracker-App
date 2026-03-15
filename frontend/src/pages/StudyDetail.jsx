@@ -969,7 +969,7 @@ const SectionHeader = ({ title, icon: Icon, onEdit }) => (
 export default function StudyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getStudyById, updateStudy, updateStudyDirect, updateTask, addTask, deleteTask, deletePublication } = useData();
+  const { getStudyById, updateStudy, updateStudyDirect, updateTask, addTask, deleteTask, deletePublication, deleteStudy } = useData();
   
   const study = getStudyById(id);
   
@@ -997,6 +997,13 @@ export default function StudyDetail() {
   // Change reason modal
   const [changeReasonOpen, setChangeReasonOpen] = useState(false);
   const [pendingUpdate, setPendingUpdate] = useState(null);
+  
+  // Delete confirmation states
+  const [deleteStudyOpen, setDeleteStudyOpen] = useState(false);
+  const [deleteTaskOpen, setDeleteTaskOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState(null);
+  const [deletePublicationOpen, setDeletePublicationOpen] = useState(false);
+  const [publicationToDelete, setPublicationToDelete] = useState(null);
 
   if (!study) {
     return (
@@ -1006,6 +1013,30 @@ export default function StudyDetail() {
       </div>
     );
   }
+
+  const handleDeleteStudy = () => {
+    deleteStudy(id);
+    toast.success(`Study "${study.shortTitle}" deleted`);
+    navigate('/studies');
+  };
+
+  const handleDeleteTask = () => {
+    if (taskToDelete) {
+      deleteTask(id, taskToDelete.id);
+      toast.success('Task deleted');
+      setTaskToDelete(null);
+    }
+    setDeleteTaskOpen(false);
+  };
+
+  const handleDeletePublication = () => {
+    if (publicationToDelete) {
+      deletePublication(id, publicationToDelete.id);
+      toast.success('Publication deleted');
+      setPublicationToDelete(null);
+    }
+    setDeletePublicationOpen(false);
+  };
 
   const handleSaveWithReason = (section, updates) => {
     setPendingUpdate({ section, updates });
