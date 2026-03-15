@@ -1277,7 +1277,6 @@ export default function StudyDetail() {
                   </div>
                 </>
               )}
-              </div>
             </CardContent>
           </CollapsibleContent>
         </Card>
