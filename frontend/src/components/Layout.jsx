@@ -94,7 +94,7 @@ export const Layout = ({ children }) => {
                 } ${
                   isActive 
                     ? 'bg-primary text-primary-foreground shadow-md dark:shadow-primary/20' 
-                    : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground hover:shadow-sm dark:hover:shadow-white/5 dark:hover:bg-muted/50'
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-sm dark:hover:bg-accent/80'
                 }`
               }
             >
