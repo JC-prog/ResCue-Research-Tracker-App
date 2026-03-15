@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
@@ -988,9 +988,16 @@ const SectionHeader = ({ title, icon: Icon, onEdit }) => (
 export default function StudyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getStudyById, updateStudy, updateStudyDirect, updateTask, addTask, deleteTask, deletePublication, deleteStudy } = useData();
+  const { getStudyById, markStudyOpened, updateStudy, updateStudyDirect, updateTask, addTask, deleteTask, deletePublication, deleteStudy } = useData();
   
   const study = getStudyById(id);
+  
+  // Mark study as opened when viewing
+  useEffect(() => {
+    if (id) {
+      markStudyOpened(id);
+    }
+  }, [id, markStudyOpened]);
   
   // Section collapse states
   const [infoOpen, setInfoOpen] = useState(true);
