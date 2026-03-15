@@ -1385,8 +1385,8 @@ export default function StudyDetail() {
                             innerRadius={40}
                             outerRadius={70}
                           >
-                            {genderData.map((_, i) => (
-                              <Cell key={i} fill={CHART_COLORS[i % CHART_COLORS.length]} />
+                            {genderData.map((entry, i) => (
+                              <Cell key={i} fill={GENDER_COLORS[entry.name] || CHART_COLORS[i % CHART_COLORS.length]} />
                             ))}
                           </Pie>
                           <Tooltip formatter={(value, name) => [`${value} participants`, name]} />
@@ -1600,7 +1600,7 @@ export default function StudyDetail() {
                     </div>
                     <div className="flex items-center gap-1">
                       {pub.link && (
-                        <Button variant="ghost" size="sm" onClick={() => window.open(pub.link, '_blank')}>
+                        <Button variant="ghost" size="icon" onClick={() => window.open(pub.link, '_blank')} title="View">
                           <ExternalLink className="w-4 h-4" />
                         </Button>
                       )}

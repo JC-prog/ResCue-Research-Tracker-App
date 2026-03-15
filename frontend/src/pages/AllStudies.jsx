@@ -284,17 +284,6 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
               />
             </div>
             <div className="space-y-2">
-              <Label>Phase</Label>
-              <Input
-                value={formData.phase}
-                onChange={(e) => setFormData({...formData, phase: e.target.value})}
-                placeholder="e.g., Phase I, Phase II, Pilot, etc."
-              />
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
               <Label>Status</Label>
               <Select value={formData.status} onValueChange={(v) => setFormData({...formData, status: v})}>
                 <SelectTrigger>
@@ -307,6 +296,17 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
                   <SelectItem value="on-hold">On Hold</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Phase</Label>
+              <Input
+                value={formData.phase}
+                onChange={(e) => setFormData({...formData, phase: e.target.value})}
+                placeholder="e.g., Phase I, Phase II, Pilot, etc."
+              />
             </div>
             <div className="space-y-2">
               <Label>Target Enrollment</Label>
