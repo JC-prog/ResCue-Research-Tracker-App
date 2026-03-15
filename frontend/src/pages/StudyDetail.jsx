@@ -789,6 +789,159 @@ const EditTagsModal = ({ open, onClose, tags, onSave }) => {
   );
 };
 
+// Add Task Modal
+const AddTaskModal = ({ open, onClose, onSave }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    priority: 'normal',
+    dueDate: new Date().toISOString().split('T')[0]
+  });
+
+  const handleSave = () => {
+    if (!formData.title.trim()) {
+      toast.error('Please enter a task title');
+      return;
+    }
+    onSave({
+      ...formData,
+      completed: false
+    });
+    setFormData({ title: '', priority: 'normal', dueDate: new Date().toISOString().split('T')[0] });
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent data-testid="add-task-modal">
+        <DialogHeader>
+          <DialogTitle>Add New Task</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label>Task Title *</Label>
+            <Input
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              placeholder="Enter task title..."
+              data-testid="task-title-input"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Priority</Label>
+              <Select value={formData.priority} onValueChange={(v) => setFormData({...formData, priority: v})}>
+                <SelectTrigger data-testid="task-priority-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="normal">Normal</SelectItem>
+                  <SelectItem value="crucial">Crucial</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Due Date</Label>
+              <Input
+                type="date"
+                value={formData.dueDate}
+                onChange={(e) => setFormData({...formData, dueDate: e.target.value})}
+                data-testid="task-due-date-input"
+              />
+            </div>
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSave} data-testid="save-task-btn">Add Task</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+// Add Publication Modal
+const AddPublicationModal = ({ open, onClose, onSave }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    type: 'Journal Article',
+    link: '',
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  const handleSave = () => {
+    if (!formData.title.trim()) {
+      toast.error('Please enter a publication title');
+      return;
+    }
+    onSave({
+      ...formData,
+      id: crypto.randomUUID()
+    });
+    setFormData({ title: '', type: 'Journal Article', link: '', date: new Date().toISOString().split('T')[0] });
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent data-testid="add-publication-modal">
+        <DialogHeader>
+          <DialogTitle>Add New Publication</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label>Publication Title *</Label>
+            <Input
+              value={formData.title}
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              placeholder="Enter publication title..."
+              data-testid="publication-title-input"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Type</Label>
+              <Select value={formData.type} onValueChange={(v) => setFormData({...formData, type: v})}>
+                <SelectTrigger data-testid="publication-type-select">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Journal Article">Journal Article</SelectItem>
+                  <SelectItem value="Conference Paper">Conference Paper</SelectItem>
+                  <SelectItem value="Abstract">Abstract</SelectItem>
+                  <SelectItem value="Poster">Poster</SelectItem>
+                  <SelectItem value="Book Chapter">Book Chapter</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Date</Label>
+              <Input
+                type="date"
+                value={formData.date}
+                onChange={(e) => setFormData({...formData, date: e.target.value})}
+                data-testid="publication-date-input"
+              />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Link (Optional)</Label>
+            <Input
+              value={formData.link}
+              onChange={(e) => setFormData({...formData, link: e.target.value})}
+              placeholder="https://..."
+              data-testid="publication-link-input"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSave} data-testid="save-publication-btn">Add Publication</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 // Section Header Component
 const SectionHeader = ({ title, icon: Icon, onEdit }) => (
   <div className="flex items-center justify-between">
