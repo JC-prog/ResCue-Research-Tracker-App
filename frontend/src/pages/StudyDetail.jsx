@@ -1131,27 +1131,38 @@ export default function StudyDetail() {
           </CardHeader>
           <CollapsibleContent>
             <CardContent>
-              <div className="flex items-center gap-2 mb-4">
-                <Badge variant="secondary" className="font-mono">{study.fund.ioCode}</Badge>
-                <span className="text-sm text-muted-foreground">
-                  Total: {formatCurrency(totalBudget)} | Used: {formatCurrency(usedBudget)} | Remaining: {formatCurrency(totalBudget - usedBudget)}
-                </span>
-              </div>
-              <div className="space-y-3">
-                {study.fund.categories.map((cat, i) => (
-                  <div key={i} className="flex items-center gap-4">
-                    <span className="w-28 text-sm text-muted-foreground">{cat.name}</span>
-                    <div className="flex-1">
-                      <Progress value={(cat.used / cat.initial) * 100} className="h-3" />
+              <div className="space-y-4">
+                {study.fund.categories.map((cat, i) => {
+                  const remaining = cat.initial - cat.used;
+                  const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
+                  return (
+                    <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="font-medium">{cat.name}</span>
+                          <Badge variant="outline" className="font-mono text-xs">
+                            {cat.ioCode || 'No IO Code'}
+                          </Badge>
+                        </div>
+                        <span className="text-sm text-muted-foreground">
+                          Budget: {formatCurrency(cat.initial)}
+                        </span>
+                      </div>
+                      <Progress value={percentUsed} className="h-3" />
+                      <div className="flex justify-between text-sm">
+                        <div className="flex gap-6">
+                          <span className="text-muted-foreground">
+                            Used: <span className="font-medium text-foreground tabular-nums">{formatCurrency(cat.used)}</span>
+                          </span>
+                          <span className="text-green-600 dark:text-green-400 font-medium">
+                            Remaining: <span className="tabular-nums">{formatCurrency(remaining)}</span>
+                          </span>
+                        </div>
+                        <span className="text-muted-foreground tabular-nums">{percentUsed.toFixed(0)}% used</span>
+                      </div>
                     </div>
-                    <span className="text-sm tabular-nums w-48 text-right">
-                      {formatCurrency(cat.used)} / {formatCurrency(cat.initial)}
-                    </span>
-                    <span className="text-sm text-green-600 dark:text-green-400 tabular-nums w-28 text-right">
-                      {formatCurrency(cat.initial - cat.used)} left
-                    </span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </CardContent>
           </CollapsibleContent>
