@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { Search, Calendar, Building2 } from 'lucide-react';
+import { Checkbox } from '../components/ui/checkbox';
+import { Search, Calendar, Building2, X } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const formatCurrency = (amount) => {
@@ -42,19 +44,45 @@ export default function Grants() {
   const { getAllGrants } = useData();
   const grants = getAllGrants();
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
+
+  const statusOptions = [
+    { value: 'active', label: 'Active', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
+    { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
+    { value: 'completed', label: 'Completed', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
+    { value: 'on-hold', label: 'On Hold', color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' }
+  ];
+
+  const toggleStatus = (status) => {
+    setSelectedStatuses(prev => 
+      prev.includes(status) 
+        ? prev.filter(s => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedStatuses([]);
+    setSearchQuery('');
+  };
 
   const filteredGrants = useMemo(() => {
-    if (!searchQuery.trim()) return grants;
-    const query = searchQuery.toLowerCase();
-    return grants.filter(grant => 
-      grant.studyTitle.toLowerCase().includes(query) ||
-      grant.grantBody.toLowerCase().includes(query) ||
-      grant.categories.some(cat => 
-        cat.ioCode?.toLowerCase().includes(query) ||
-        cat.name.toLowerCase().includes(query)
-      )
-    );
-  }, [grants, searchQuery]);
+    return grants.filter(grant => {
+      // Search filter
+      const matchesSearch = !searchQuery.trim() || 
+        grant.studyTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        grant.grantBody.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        grant.categories.some(cat => 
+          cat.ioCode?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          cat.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      
+      // Status filter (if no statuses selected, show all)
+      const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(grant.status);
+      
+      return matchesSearch && matchesStatus;
+    });
+  }, [grants, searchQuery, selectedStatuses]);
 
   return (
     <div className="space-y-6 animate-fade-in" data-testid="grants-page">
@@ -74,6 +102,41 @@ export default function Grants() {
           className="pl-10"
           data-testid="search-grants-input"
         />
+      </div>
+
+      {/* Status Filter */}
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-sm text-muted-foreground">Filter by status:</span>
+        {statusOptions.map(status => (
+          <label 
+            key={status.value}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer transition-all ${
+              selectedStatuses.includes(status.value) 
+                ? status.color + ' ring-2 ring-offset-2 ring-primary/50' 
+                : 'bg-muted/50 hover:bg-muted'
+            }`}
+          >
+            <Checkbox
+              checked={selectedStatuses.includes(status.value)}
+              onCheckedChange={() => toggleStatus(status.value)}
+              className="w-4 h-4"
+              data-testid={`filter-status-${status.value}`}
+            />
+            <span className="text-sm font-medium">{status.label}</span>
+          </label>
+        ))}
+        {(selectedStatuses.length > 0 || searchQuery) && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearFilters}
+            className="text-muted-foreground hover:text-foreground"
+            data-testid="clear-filters-btn"
+          >
+            <X className="w-4 h-4 mr-1" />
+            Clear filters
+          </Button>
+        )}
       </div>
 
       {/* Grants List */}
