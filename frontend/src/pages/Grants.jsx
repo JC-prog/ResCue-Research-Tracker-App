@@ -130,7 +130,7 @@ export default function Grants() {
               className="w-4 h-4"
               data-testid={`filter-status-${status.value}`}
             />
-            <span className="text-sm font-medium">{status.label}</span>
+            <span className="text-sm font-medium">{status.label} ({statusCounts[status.value] || 0})</span>
           </label>
         ))}
         {(selectedStatuses.length > 0 || searchQuery) && (
