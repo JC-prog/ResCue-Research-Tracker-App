@@ -313,59 +313,83 @@ const EditStudyInfoModal = ({ open, onClose, study, onSave }) => {
 const EditFundModal = ({ open, onClose, fund, onSave }) => {
   const [formData, setFormData] = useState({
     grantBody: fund?.grantBody || '',
-    ioCode: fund?.ioCode || '',
     categories: fund?.categories || []
   });
 
   const updateCategory = (index, field, value) => {
     const newCategories = [...formData.categories];
-    newCategories[index] = { ...newCategories[index], [field]: parseFloat(value) || 0 };
+    if (field === 'ioCode' || field === 'name') {
+      newCategories[index] = { ...newCategories[index], [field]: value };
+    } else {
+      newCategories[index] = { ...newCategories[index], [field]: parseFloat(value) || 0 };
+    }
     setFormData({ ...formData, categories: newCategories });
+  };
+
+  const addCategory = () => {
+    setFormData({
+      ...formData,
+      categories: [...formData.categories, { name: 'New Category', ioCode: 'IO-NEW-0000', initial: 0, used: 0 }]
+    });
+  };
+
+  const removeCategory = (index) => {
+    setFormData({
+      ...formData,
+      categories: formData.categories.filter((_, i) => i !== index)
+    });
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl" data-testid="edit-fund-modal">
+      <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto" data-testid="edit-fund-modal">
         <DialogHeader>
           <DialogTitle>Edit Fund Overview</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Grant Body</Label>
-              <Input
-                value={formData.grantBody}
-                onChange={(e) => setFormData({...formData, grantBody: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>IO Code</Label>
-              <Input
-                value={formData.ioCode}
-                onChange={(e) => setFormData({...formData, ioCode: e.target.value})}
-              />
-            </div>
+          <div className="space-y-2">
+            <Label>Grant Body</Label>
+            <Input
+              value={formData.grantBody}
+              onChange={(e) => setFormData({...formData, grantBody: e.target.value})}
+            />
           </div>
           <div className="space-y-2">
-            <Label>Budget Categories</Label>
+            <Label>Budget Categories (Each with own IO Code)</Label>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Category</TableHead>
+                  <TableHead>IO Code</TableHead>
                   <TableHead>Initial ($)</TableHead>
                   <TableHead>Used ($)</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {formData.categories.map((cat, i) => (
                   <TableRow key={i}>
-                    <TableCell>{cat.name}</TableCell>
+                    <TableCell>
+                      <Input
+                        value={cat.name}
+                        onChange={(e) => updateCategory(i, 'name', e.target.value)}
+                        className="w-32"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        value={cat.ioCode || ''}
+                        onChange={(e) => updateCategory(i, 'ioCode', e.target.value)}
+                        className="w-40 font-mono text-xs"
+                        placeholder="IO-XXX-0000"
+                      />
+                    </TableCell>
                     <TableCell>
                       <Input
                         type="number"
                         value={cat.initial}
                         onChange={(e) => updateCategory(i, 'initial', e.target.value)}
-                        className="w-32"
+                        className="w-28"
                       />
                     </TableCell>
                     <TableCell>
@@ -373,13 +397,21 @@ const EditFundModal = ({ open, onClose, fund, onSave }) => {
                         type="number"
                         value={cat.used}
                         onChange={(e) => updateCategory(i, 'used', e.target.value)}
-                        className="w-32"
+                        className="w-28"
                       />
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon" onClick={() => removeCategory(i)}>
+                        <Trash2 className="w-4 h-4 text-destructive" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+            <Button variant="outline" onClick={addCategory} className="mt-2">
+              <Plus className="w-4 h-4 mr-2" /> Add Category
+            </Button>
           </div>
         </div>
         <DialogFooter>
@@ -392,8 +424,9 @@ const EditFundModal = ({ open, onClose, fund, onSave }) => {
 };
 
 // Edit Recruitment Modal
-const EditRecruitmentModal = ({ open, onClose, recruitment, onSave }) => {
+const EditRecruitmentModal = ({ open, onClose, recruitment, targetEnrollment, onSave }) => {
   const [sites, setSites] = useState(recruitment?.sites || []);
+  const [target, setTarget] = useState(targetEnrollment || 0);
 
   const updateSite = (index, field, value) => {
     const newSites = [...sites];
@@ -416,65 +449,79 @@ const EditRecruitmentModal = ({ open, onClose, recruitment, onSave }) => {
           <DialogTitle>Edit Recruitment Data</DialogTitle>
         </DialogHeader>
         <div className="space-y-4 py-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Site Name</TableHead>
-                <TableHead>Screened</TableHead>
-                <TableHead>Enrolled</TableHead>
-                <TableHead>Failed</TableHead>
-                <TableHead></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {sites.map((site, i) => (
-                <TableRow key={i}>
-                  <TableCell>
-                    <Input
-                      value={site.name}
-                      onChange={(e) => updateSite(i, 'name', e.target.value)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={site.screened}
-                      onChange={(e) => updateSite(i, 'screened', e.target.value)}
-                      className="w-24"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={site.enrolled}
-                      onChange={(e) => updateSite(i, 'enrolled', e.target.value)}
-                      className="w-24"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Input
-                      type="number"
-                      value={site.failed}
-                      onChange={(e) => updateSite(i, 'failed', e.target.value)}
-                      className="w-24"
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon" onClick={() => removeSite(i)}>
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </TableCell>
+          <div className="space-y-2">
+            <Label>Target Enrollment</Label>
+            <Input
+              type="number"
+              value={target}
+              onChange={(e) => setTarget(parseInt(e.target.value) || 0)}
+              className="w-40"
+              placeholder="Target enrollment number"
+              data-testid="target-enrollment-input"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label>Recruitment Sites</Label>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Site Name</TableHead>
+                  <TableHead>Screened</TableHead>
+                  <TableHead>Enrolled</TableHead>
+                  <TableHead>Failed</TableHead>
+                  <TableHead></TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <Button variant="outline" onClick={addSite}>
-            <Plus className="w-4 h-4 mr-2" /> Add Site
-          </Button>
+              </TableHeader>
+              <TableBody>
+                {sites.map((site, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Input
+                        value={site.name}
+                        onChange={(e) => updateSite(i, 'name', e.target.value)}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        value={site.screened}
+                        onChange={(e) => updateSite(i, 'screened', e.target.value)}
+                        className="w-24"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        value={site.enrolled}
+                        onChange={(e) => updateSite(i, 'enrolled', e.target.value)}
+                        className="w-24"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Input
+                        type="number"
+                        value={site.failed}
+                        onChange={(e) => updateSite(i, 'failed', e.target.value)}
+                        className="w-24"
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <Button variant="ghost" size="icon" onClick={() => removeSite(i)}>
+                        <Trash2 className="w-4 h-4 text-destructive" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <Button variant="outline" onClick={addSite}>
+              <Plus className="w-4 h-4 mr-2" /> Add Site
+            </Button>
+          </div>
         </div>
         <DialogFooter>
           <Button variant="outline" onClick={onClose}>Cancel</Button>
-          <Button onClick={() => onSave({ sites })} data-testid="save-recruitment-btn">Save Changes</Button>
+          <Button onClick={() => onSave({ sites }, target)} data-testid="save-recruitment-btn">Save Changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
@@ -487,6 +534,7 @@ const EditDemographicsModal = ({ open, onClose, demographics, onSave }) => {
     gender: demographics?.gender || { male: 0, female: 0, other: 0 },
     ethnicity: demographics?.ethnicity || {}
   });
+  const [newEthnicity, setNewEthnicity] = useState('');
 
   const updateGender = (key, value) => {
     setFormData({
@@ -502,9 +550,25 @@ const EditDemographicsModal = ({ open, onClose, demographics, onSave }) => {
     });
   };
 
+  const addEthnicity = () => {
+    if (newEthnicity.trim() && !formData.ethnicity[newEthnicity.trim()]) {
+      setFormData({
+        ...formData,
+        ethnicity: { ...formData.ethnicity, [newEthnicity.trim()]: 0 }
+      });
+      setNewEthnicity('');
+    }
+  };
+
+  const removeEthnicity = (key) => {
+    const newEthnicityData = { ...formData.ethnicity };
+    delete newEthnicityData[key];
+    setFormData({ ...formData, ethnicity: newEthnicityData });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl" data-testid="edit-demographics-modal">
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" data-testid="edit-demographics-modal">
         <DialogHeader>
           <DialogTitle>Edit Demographics</DialogTitle>
         </DialogHeader>
@@ -541,15 +605,32 @@ const EditDemographicsModal = ({ open, onClose, demographics, onSave }) => {
           
           <div className="space-y-4">
             <Label className="text-base font-semibold">Race/Ethnicity</Label>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="flex gap-2 mb-4">
+              <Input
+                value={newEthnicity}
+                onChange={(e) => setNewEthnicity(e.target.value)}
+                placeholder="Add new race/ethnicity category..."
+                onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addEthnicity())}
+              />
+              <Button type="button" onClick={addEthnicity}>Add</Button>
+            </div>
+            <div className="space-y-3">
               {Object.entries(formData.ethnicity).map(([key, value]) => (
-                <div key={key} className="space-y-2">
-                  <Label>{key}</Label>
+                <div key={key} className="flex items-center gap-3">
+                  <Label className="w-40 truncate">{key}</Label>
                   <Input
                     type="number"
                     value={value}
                     onChange={(e) => updateEthnicity(key, e.target.value)}
+                    className="w-24"
                   />
+                  <Button 
+                    variant="ghost" 
+                    size="icon" 
+                    onClick={() => removeEthnicity(key)}
+                  >
+                    <Trash2 className="w-4 h-4 text-destructive" />
+                  </Button>
                 </div>
               ))}
             </div>
