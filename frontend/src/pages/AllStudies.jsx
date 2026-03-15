@@ -174,7 +174,7 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
     irbExpiryDate: '',
     grantStartDate: '',
     grantEndDate: '',
-    targetEnrollment: 100,
+    targetEnrollment: '',
     grantBody: '',
     hasGrant: false,
     tags: []
