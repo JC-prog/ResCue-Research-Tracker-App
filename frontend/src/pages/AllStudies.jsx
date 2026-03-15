@@ -266,7 +266,7 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
           </div>
           
           <div className="space-y-2">
-            <Label>Long Title</Label>
+            <Label>Study Title</Label>
             <Textarea
               value={formData.longTitle}
               onChange={(e) => setFormData({...formData, longTitle: e.target.value})}

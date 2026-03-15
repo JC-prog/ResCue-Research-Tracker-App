@@ -259,7 +259,7 @@ const EditStudyInfoModal = ({ open, onClose, study, onSave }) => {
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <div className="space-y-2">
-            <Label>Long Title</Label>
+            <Label>Study Title</Label>
             <Textarea
               value={formData.longTitle}
               onChange={(e) => setFormData({...formData, longTitle: e.target.value})}
@@ -1158,7 +1158,7 @@ export default function StudyDetail() {
           <CollapsibleContent>
             <CardContent className="space-y-4">
               <div>
-                <Label className="text-muted-foreground">Long Title</Label>
+                <Label className="text-muted-foreground">Study Title</Label>
                 <p className="mt-1">{study.longTitle}</p>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
