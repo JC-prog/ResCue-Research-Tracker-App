@@ -1,0 +1,185 @@
+{
+  "design_system": {
+    "identity": {
+      "name": "ResCue",
+      "archetype": "Clinical Precision",
+      "vibe": "Trustworthy, Scannable, Academic, Sterile-but-Warm",
+      "emotional_tone": "Calm Authority"
+    },
+    "typography": {
+      "font_family": {
+        "heading": "Manrope, sans-serif",
+        "body": "Inter, sans-serif",
+        "mono": "JetBrains Mono, monospace"
+      },
+      "scale": {
+        "h1": "text-4xl font-bold tracking-tight lg:text-5xl",
+        "h2": "text-3xl font-semibold tracking-tight",
+        "h3": "text-2xl font-semibold tracking-tight",
+        "p": "leading-7 [&:not(:first-child)]:mt-6",
+        "small": "text-sm font-medium leading-none"
+      },
+      "rules": [
+        "NEVER use Inter for Headings (h1-h3).",
+        "Use Manrope for all headings to establish the 'Medical/Tech' personality.",
+        "Use tight tracking (tracking-tight) for headings larger than 24px.",
+        "Use tabular-nums for all data tables and metrics."
+      ]
+    },
+    "colors": {
+      "palette": {
+        "light": {
+          "background": "210 40% 98%",
+          "foreground": "222 47% 11%",
+          "card": "0 0% 100%",
+          "card_foreground": "222 47% 11%",
+          "popover": "0 0% 100%",
+          "popover_foreground": "222 47% 11%",
+          "primary": "221 83% 53%",
+          "primary_foreground": "210 40% 98%",
+          "secondary": "210 40% 96.1%",
+          "secondary_foreground": "222 47% 11%",
+          "muted": "210 40% 96.1%",
+          "muted_foreground": "215 16% 47%",
+          "accent": "210 40% 96.1%",
+          "accent_foreground": "222 47% 11%",
+          "destructive": "0 84.2% 60.2%",
+          "destructive_foreground": "210 40% 98%",
+          "border": "214.3 31.8% 91.4%",
+          "input": "214.3 31.8% 91.4%",
+          "ring": "221 83% 53%"
+        },
+        "dark": {
+          "background": "222 47% 11%",
+          "foreground": "210 40% 98%",
+          "card": "217 33% 17%",
+          "card_foreground": "210 40% 98%",
+          "popover": "222 47% 11%",
+          "popover_foreground": "210 40% 98%",
+          "primary": "217 91% 60%",
+          "primary_foreground": "222 47% 11%",
+          "secondary": "217 33% 17%",
+          "secondary_foreground": "210 40% 98%",
+          "muted": "217 33% 17%",
+          "muted_foreground": "215 20.2% 65.1%",
+          "accent": "217 33% 17%",
+          "accent_foreground": "210 40% 98%",
+          "destructive": "0 62.8% 30.6%",
+          "destructive_foreground": "210 40% 98%",
+          "border": "217 33% 17%",
+          "input": "217 33% 17%",
+          "ring": "224.3 76.3% 48%"
+        }
+      },
+      "chart_colors": {
+        "light": {
+          "chart_1": "221 83% 53%",
+          "chart_2": "173 58% 39%",
+          "chart_3": "197 37% 24%",
+          "chart_4": "43 74% 66%",
+          "chart_5": "27 87% 67%"
+        },
+        "dark": {
+          "chart_1": "220 70% 50%",
+          "chart_2": "160 60% 45%",
+          "chart_3": "30 80% 55%",
+          "chart_4": "280 65% 60%",
+          "chart_5": "340 75% 55%"
+        }
+      },
+      "forbidden": [
+        "#1B93A4 (Teal Green/Blue)",
+        "Gradients on text",
+        "Full screen gradients"
+      ]
+    },
+    "layout": {
+      "spacing_scale": "Generous (p-6, p-8, p-12)",
+      "container_padding": "px-4 md:px-8 lg:px-12",
+      "border_radius": "0.5rem",
+      "grid_strategy": "Bento Grid Mode B (High Density)",
+      "modes": {
+        "dashboard": {
+          "type": "grid",
+          "cols": "grid-cols-1 md:grid-cols-4",
+          "gap": "gap-6",
+          "rules": "Widgets must stretch to fill height (h-full). No jagged bottoms."
+        },
+        "detail_page": {
+          "type": "sidebar-content",
+          "rules": "Sticky sidebar for navigation anchors, scrollable main content."
+        }
+      }
+    },
+    "components": {
+      "cards": {
+        "style": "Flat with subtle border in light mode, slightly elevated in dark mode.",
+        "classes": "rounded-lg border bg-card text-card-foreground shadow-sm"
+      },
+      "buttons": {
+        "primary": "bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm",
+        "secondary": "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        "ghost": "hover:bg-accent hover:text-accent-foreground"
+      },
+      "inputs": {
+        "style": "Clean, high contrast borders.",
+        "classes": "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      }
+    },
+    "visual_enhancers": {
+      "glassmorphism": "Use sparingly for sticky headers: bg-background/80 backdrop-blur-md border-b",
+      "shadows": "Soft, diffuse shadows: shadow-[0_2px_8px_rgba(0,0,0,0.08)]",
+      "borders": "Crisp 1px borders. Avoid thick borders."
+    },
+    "assets": {
+      "icons": "Lucide React (default)",
+      "images": [
+        {
+          "category": "dashboard_empty_state",
+          "url": "https://images.unsplash.com/photo-1576669801838-1b1c52121e6a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwcmVzZWFyY2glMjBsYWJvcmF0b3J5JTIwbW9kZXJufGVufDB8fHx8MTc3MzU2MzcxOHww&ixlib=rb-4.1.0&q=85",
+          "description": "Modern medical research lab, clean and white. Use for 'No Active Studies' empty state."
+        },
+        {
+          "category": "study_detail_hero",
+          "url": "https://images.unsplash.com/photo-1582719299074-be127353065f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHwzfHxtZWRpY2FsJTIwcmVzZWFyY2glMjBsYWJvcmF0b3J5JTIwbW9kZXJufGVufDB8fHx8MTc3MzU2MzcxOHww&ixlib=rb-4.1.0&q=85",
+          "description": "Technician in lab. Use as a subtle banner or hero image for the Study Detail page."
+        },
+        {
+          "category": "login_cover",
+          "url": "https://images.unsplash.com/photo-1758691462353-36b215702253?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwyfHxkb2N0b3IlMjB1c2luZyUyMHRhYmxldCUyMGhvc3BpdGFsfGVufDB8fHx8MTc3MzU2MzcyM3ww&ixlib=rb-4.1.0&q=85",
+          "description": "Doctor using tablet. Use for any auth/landing screens if needed."
+        }
+      ]
+    },
+    "universal_guidelines": [
+      "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients",
+      "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+      "Create depth through layered design elements with z-index hierarchy",
+      "Use glass-morphism effects with backdrop filters (12-24px blur)",
+      "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms",
+      "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text",
+      "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style",
+      "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯📚🎭🎬🎪🎉🎊🎁🎀🎂🍰🎈🎨🎰💰💵💳🏦💎🪙💸🤑📊📈📉💹🔢🏆🥇 etc for icons.",
+      "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead.",
+      "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+      "Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary.",
+      "Main agent relies on these image URLs. Missing categories (especially sponsor logos) = main agent will use placeholder text which is FORBIDDEN",
+      "Prioritize using pre-existing components from src/components/ui when applicable",
+      "Create new components that match the style and conventions of existing components when needed",
+      "Examine existing components to understand the project's component patterns before creating new ones",
+      "Components MUST use named exports (export const ComponentName = ...)",
+      "Pages MUST use default exports (export default function PageName() {...})",
+      "Use sonner for toasts. Sonner component are located in /app/src/components/ui/sonner.tsx",
+      "All interactive and key informational elements MUST include a data-testid attribute to facilitate robust automated testing."
+    ],
+    "instructions_to_main_agent": [
+      "1. INSTALL FONTS: Add '@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');' to index.css",
+      "2. UPDATE TAILWIND CONFIG: Copy the colors and borderRadius settings from this JSON to tailwind.config.js",
+      "3. UPDATE CSS VARIABLES: Copy the HSL values from this JSON to src/index.css :root and .dark classes.",
+      "4. SCAFFOLD LAYOUT: Create a 'Layout' component with a Sidebar (left) and Main Content (right).",
+      "5. BUILD DASHBOARD: Use the 'Bento Grid Mode B' for the dashboard layout.",
+      "6. PERSISTENCE: Implement a 'useLocalStorage' hook for all data stores.",
+      "7. THEME: Implement the ThemeProvider using the variables defined here."
+    ]
+  }
+}
