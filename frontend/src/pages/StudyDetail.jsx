@@ -1600,6 +1600,33 @@ export default function StudyDetail() {
         </Card>
       </Collapsible>
 
+      {/* Tags Section */}
+      <Collapsible open={tagsOpen} onOpenChange={setTagsOpen}>
+        <Card>
+          <CardHeader className="pb-3">
+            <CollapsibleTrigger className="flex items-center justify-between w-full" data-testid="toggle-tags">
+              <SectionHeader 
+                title="Tags" 
+                icon={Tag} 
+                onEdit={() => setEditTagsOpen(true)} 
+              />
+              {tagsOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+            </CollapsibleTrigger>
+          </CardHeader>
+          <CollapsibleContent>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {study.tags.map(tag => (
+                  <Badge key={tag} variant="secondary" className="text-sm py-1 px-3 rounded-full">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </CollapsibleContent>
+        </Card>
+      </Collapsible>
+
       {/* Modals */}
       <HistoryModal 
         open={historyOpen} 
