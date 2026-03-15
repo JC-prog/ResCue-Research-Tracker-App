@@ -98,6 +98,10 @@ Build ResCue, a professional, hospital-grade research management dashboard with 
 - [x] "Not Applicable" for Grant Approval Period when no funds exist
 - [x] Horizontal bar chart on Grants page replacing category cards
 - [x] Removed colored background from Grants summary panel
+- [x] Studies without grants don't appear on Grants page
+- [x] Expiry badges show exact days with "d" suffix (e.g., "45d" instead of "> 60 days")
+- [x] Grants tooltip shows "Used" and "Remaining" labels properly
+- [x] Handle invalid/missing dates gracefully (show "N/A")
 
 ## Next Tasks
 1. User/Role-Based Access Control - Implement login system with permissions
