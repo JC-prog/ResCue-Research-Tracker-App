@@ -109,7 +109,7 @@ export default function Grants() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-center">
                     {/* Fund Categories - 4 columns */}
                     <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                       {grant.categories.map((cat, i) => {
@@ -137,18 +137,18 @@ export default function Grants() {
                       })}
                     </div>
                     
-                    {/* Summary Numbers - 1 column on right */}
-                    <div className="lg:col-span-1 p-4 rounded-lg bg-muted/50 flex flex-col justify-center space-y-3">
+                    {/* Summary Numbers - 1 column on right, vertically centered */}
+                    <div className="lg:col-span-1 p-4 rounded-lg bg-muted/50 flex flex-col justify-center items-center space-y-4 min-h-[180px]">
                       <div className="text-center">
-                        <span className="text-xs text-muted-foreground block">Awarded</span>
+                        <span className="text-xs text-muted-foreground block mb-1">Awarded</span>
                         <span className="text-xl font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>
                       </div>
                       <div className="text-center">
-                        <span className="text-xs text-muted-foreground block">Used</span>
+                        <span className="text-xs text-muted-foreground block mb-1">Used</span>
                         <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(totalUsed)}</span>
                       </div>
-                      <div className="text-center border-t border-border pt-3">
-                        <span className="text-xs text-muted-foreground block">Remaining</span>
+                      <div className="text-center border-t border-border pt-3 w-full">
+                        <span className="text-xs text-muted-foreground block mb-1">Remaining</span>
                         <span className="text-2xl font-bold tabular-nums text-green-600 dark:text-green-400">{formatCurrency(totalLeft)}</span>
                       </div>
                     </div>
