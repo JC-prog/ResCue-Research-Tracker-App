@@ -22,12 +22,6 @@ const getBudgetColor = (percentRemaining) => {
   return 'text-red-600 dark:text-red-400';
 };
 
-const getBudgetBgColor = (percentRemaining) => {
-  if (percentRemaining > 50) return 'bg-green-100 dark:bg-green-900/30';
-  if (percentRemaining > 20) return 'bg-yellow-100 dark:bg-yellow-900/30';
-  return 'bg-red-100 dark:bg-red-900/30';
-};
-
 const StatusBadge = ({ status }) => {
   const styles = {
     active: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
