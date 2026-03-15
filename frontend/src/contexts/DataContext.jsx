@@ -203,6 +203,7 @@ export const DataProvider = ({ children }) => {
       studies,
       isLoaded,
       getStudyById,
+      markStudyOpened,
       updateStudy,
       updateStudyDirect,
       addStudy,
