@@ -131,6 +131,7 @@ const getExpiryBadge = (dateStr) => {
 };
 
 const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+const GENDER_COLORS = { Male: '#3b82f6', Female: '#ec4899', Other: '#8b5cf6' };
 
 // Change Reason Modal Component
 const ChangeReasonModal = ({ open, onClose, onConfirm }) => {
