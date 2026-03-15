@@ -108,7 +108,13 @@ const StatusBadge = ({ status }) => {
 };
 
 const getExpiryBadge = (dateStr) => {
+  if (!dateStr) {
+    return { color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400', text: 'N/A' };
+  }
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
+    return { color: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400', text: 'N/A' };
+  }
   const now = new Date();
   const daysRemaining = Math.ceil((date - now) / (1000 * 60 * 60 * 24));
   
