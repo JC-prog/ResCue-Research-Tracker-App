@@ -66,6 +66,14 @@ export default function Grants() {
     setSearchQuery('');
   };
 
+  // Calculate status counts
+  const statusCounts = useMemo(() => {
+    return grants.reduce((acc, grant) => {
+      acc[grant.status] = (acc[grant.status] || 0) + 1;
+      return acc;
+    }, {});
+  }, [grants]);
+
   const filteredGrants = useMemo(() => {
     return grants.filter(grant => {
       // Search filter
