@@ -33,15 +33,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '../components/ui/alert-dialog';
-import { Search, Users, Plus, Trash2 } from 'lucide-react';
+import { Search, Users, Plus, Trash2, X } from 'lucide-react';
+import { Checkbox } from '../components/ui/checkbox';
 import { toast } from 'sonner';
 
-const statusOptions = [
-  { value: 'all', label: 'All Statuses' },
-  { value: 'active', label: 'Active' },
-  { value: 'completed', label: 'Completed' },
-  { value: 'pending', label: 'Pending' },
-  { value: 'on-hold', label: 'On Hold' }
+const statusFilterOptions = [
+  { value: 'active', label: 'Active', color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
+  { value: 'pending', label: 'Pending', color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  { value: 'completed', label: 'Completed', color: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' },
+  { value: 'on-hold', label: 'On Hold', color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' }
 ];
 
 const StatusBadge = ({ status }) => {
