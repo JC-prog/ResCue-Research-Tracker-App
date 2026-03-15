@@ -8,29 +8,24 @@ import {
   CheckCircle, 
   Clock, 
   BookOpen,
-  ArrowRight,
   Users
 } from 'lucide-react';
 
 const MetricCard = ({ title, value, icon: Icon, color, onClick, testId }) => (
   <Card 
-    className="cursor-pointer hover:shadow-md transition-shadow group"
+    className="cursor-pointer hover:shadow-md transition-all hover:scale-[1.02] group"
     onClick={onClick}
     data-testid={testId}
   >
     <CardContent className="p-6">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-muted-foreground">{title}</p>
+          <p className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">{title}</p>
           <p className="text-3xl font-bold mt-2 tabular-nums font-[Manrope]">{value}</p>
         </div>
         <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${color}`}>
           <Icon className="w-6 h-6" />
         </div>
-      </div>
-      <div className="flex items-center mt-4 text-sm text-muted-foreground group-hover:text-primary transition-colors">
-        <span>View details</span>
-        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
       </div>
     </CardContent>
   </Card>
@@ -51,6 +46,21 @@ const StatusBadge = ({ status }) => {
   );
 };
 
+const getBudgetColor = (percentRemaining) => {
+  if (percentRemaining > 50) return 'text-green-600 dark:text-green-400';
+  if (percentRemaining > 20) return 'text-yellow-600 dark:text-yellow-400';
+  return 'text-red-600 dark:text-red-400';
+};
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount);
+};
+
 const StudyCard = ({ study, onClick }) => {
   const totalEnrolled = study.recruitment.sites.reduce((sum, site) => sum + site.enrolled, 0);
   const enrollmentProgress = study.targetEnrollment > 0 
@@ -59,6 +69,8 @@ const StudyCard = ({ study, onClick }) => {
   
   const totalBudget = study.fund.categories.reduce((sum, cat) => sum + cat.initial, 0);
   const usedBudget = study.fund.categories.reduce((sum, cat) => sum + cat.used, 0);
+  const remainingBudget = totalBudget - usedBudget;
+  const percentRemaining = totalBudget > 0 ? (remainingBudget / totalBudget) * 100 : 0;
   const budgetProgress = totalBudget > 0 ? (usedBudget / totalBudget) * 100 : 0;
 
   return (
@@ -89,8 +101,10 @@ const StudyCard = ({ study, onClick }) => {
         
         <div>
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-muted-foreground">Budget Used</span>
-            <span className="tabular-nums">{budgetProgress.toFixed(0)}%</span>
+            <span className="text-muted-foreground">Budget</span>
+            <span className={`tabular-nums font-medium ${getBudgetColor(percentRemaining)}`}>
+              {formatCurrency(remainingBudget)} left
+            </span>
           </div>
           <Progress value={budgetProgress} className="h-2" />
         </div>
@@ -175,16 +189,13 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Studies */}
         <div className="lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-semibold font-[Manrope]">Recent Studies</h2>
-            <button 
-              onClick={() => navigate('/studies')}
-              className="text-sm text-primary hover:underline flex items-center gap-1"
-              data-testid="view-all-studies-btn"
-            >
-              View all <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+          <h2 
+            className="text-2xl font-semibold font-[Manrope] mb-4 cursor-pointer hover:text-primary transition-colors"
+            onClick={() => navigate('/studies')}
+            data-testid="recent-studies-title"
+          >
+            Recent Studies
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {recentStudies.map(study => (
               <StudyCard
@@ -198,16 +209,13 @@ export default function Dashboard() {
 
         {/* Pending Tasks */}
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-semibold font-[Manrope]">Priority Tasks</h2>
-            <button 
-              onClick={() => navigate('/tasks')}
-              className="text-sm text-primary hover:underline flex items-center gap-1"
-              data-testid="view-all-tasks-btn"
-            >
-              View all <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+          <h2 
+            className="text-2xl font-semibold font-[Manrope] mb-4 cursor-pointer hover:text-primary transition-colors"
+            onClick={() => navigate('/tasks')}
+            data-testid="priority-tasks-title"
+          >
+            Priority Tasks
+          </h2>
           <Card>
             <CardContent className="p-4 space-y-3">
               {pendingTasksList.length === 0 ? (
