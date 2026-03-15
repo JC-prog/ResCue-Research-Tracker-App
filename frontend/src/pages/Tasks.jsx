@@ -301,18 +301,18 @@ export default function Tasks() {
       <AlertDialog open={deleteTaskOpen} onOpenChange={setDeleteTaskOpen}>
         <AlertDialogContent data-testid="delete-task-confirm">
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Task</AlertDialogTitle>
+            <AlertDialogTitle>Task Completed?</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete "{taskToDelete?.title}" from {taskToDelete?.studyTitle}? This action cannot be undone.
+              Remove "{taskToDelete?.title}" from the task list?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>No</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDeleteTask}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-primary text-primary-foreground hover:bg-primary/90"
             >
-              Delete
+              Yes
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
