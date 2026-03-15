@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useData } from '../contexts/DataContext';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { Progress } from '../components/ui/progress';
 import { Input } from '../components/ui/input';
 import { Search, Calendar, Building2 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-US', {
@@ -122,37 +122,45 @@ export default function Grants() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 items-center">
-                    {/* Fund Categories - 4 columns */}
-                    <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {grant.categories.map((cat, i) => {
-                        const remaining = cat.initial - cat.used;
-                        const catPercentRemaining = cat.initial > 0 ? (remaining / cat.initial) * 100 : 0;
-                        const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
-                        return (
-                          <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
-                            <div className="text-center">
-                              <span className="font-semibold text-sm block">{cat.name}</span>
-                              <Badge variant="outline" className="font-mono text-xs mt-1">
-                                {cat.ioCode || 'N/A'}
-                              </Badge>
-                            </div>
-                            <Progress value={percentUsed} className="h-2" />
-                            <div className="text-center space-y-1">
-                              <div className="text-xs text-muted-foreground">
-                                {formatCurrency(cat.used)} used
-                              </div>
-                              <div className={`text-sm font-semibold ${getBudgetColor(catPercentRemaining)}`}>
-                                {formatCurrency(remaining)} left
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      })}
+                  <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
+                    {/* Horizontal Bar Chart for Fund Categories - 3 columns */}
+                    <div className="lg:col-span-3">
+                      <div className="h-[200px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <BarChart
+                            data={grant.categories.map(cat => ({
+                              name: cat.name,
+                              ioCode: cat.ioCode || 'N/A',
+                              used: cat.used,
+                              remaining: cat.initial - cat.used,
+                              initial: cat.initial
+                            }))}
+                            layout="vertical"
+                            margin={{ top: 5, right: 30, left: 100, bottom: 5 }}
+                          >
+                            <XAxis type="number" tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`} />
+                            <YAxis 
+                              type="category" 
+                              dataKey="name" 
+                              width={90}
+                              tick={{ fontSize: 12 }}
+                            />
+                            <Tooltip 
+                              formatter={(value, name) => [formatCurrency(value), name === 'used' ? 'Used' : 'Remaining']}
+                              labelFormatter={(label) => {
+                                const cat = grant.categories.find(c => c.name === label);
+                                return `${label} (${cat?.ioCode || 'N/A'})`;
+                              }}
+                            />
+                            <Bar dataKey="used" stackId="a" fill="#ef4444" name="Used" />
+                            <Bar dataKey="remaining" stackId="a" fill="#22c55e" name="Remaining" radius={[0, 4, 4, 0]} />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
                     </div>
                     
-                    {/* Summary Numbers - 1 column on right, vertically centered */}
-                    <div className={`lg:col-span-1 p-4 rounded-lg ${getBudgetBgColor(percentRemaining)} flex flex-col justify-center items-center space-y-3 min-h-[180px]`}>
+                    {/* Summary Numbers - 1 column on right, no background highlight */}
+                    <div className="lg:col-span-1 p-4 rounded-lg border border-border flex flex-col justify-center items-center space-y-3 min-h-[180px]">
                       <div className="text-center">
                         <span className="text-xs text-muted-foreground block mb-1">Awarded</span>
                         <span className="text-xl font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>

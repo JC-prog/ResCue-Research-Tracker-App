@@ -64,7 +64,8 @@ import {
   CheckCircle2,
   Clock,
   BookOpen,
-  ExternalLink
+  ExternalLink,
+  Timer
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -1159,15 +1160,25 @@ export default function StudyDetail() {
                   <Label className="text-muted-foreground">IRB Approval Period</Label>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm">{new Date(study.irbApprovalDate).toLocaleDateString()} - {new Date(study.irbExpiryDate).toLocaleDateString()}</p>
-                    <Badge className={`${irbExpiry.color} border-0 text-xs`}>{irbExpiry.text}</Badge>
+                    <Badge className={`${irbExpiry.color} border-0 text-xs flex items-center gap-1`}>
+                      <Timer className="w-3 h-3" />
+                      {irbExpiry.text}
+                    </Badge>
                   </div>
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Grant Approval Period</Label>
-                  <div className="flex items-center gap-2 mt-1">
-                    <p className="text-sm">{new Date(study.grantStartDate).toLocaleDateString()} - {new Date(study.grantEndDate).toLocaleDateString()}</p>
-                    <Badge className={`${grantExpiry.color} border-0 text-xs`}>{grantExpiry.text}</Badge>
-                  </div>
+                  {totalBudget > 0 ? (
+                    <div className="flex items-center gap-2 mt-1">
+                      <p className="text-sm">{new Date(study.grantStartDate).toLocaleDateString()} - {new Date(study.grantEndDate).toLocaleDateString()}</p>
+                      <Badge className={`${grantExpiry.color} border-0 text-xs flex items-center gap-1`}>
+                        <Timer className="w-3 h-3" />
+                        {grantExpiry.text}
+                      </Badge>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground mt-1">Not Applicable</p>
+                  )}
                 </div>
               </div>
             </CardContent>
