@@ -1568,7 +1568,9 @@ export default function StudyDetail() {
         tags={study.tags}
         onSave={(data) => {
           setEditTagsOpen(false);
-          handleSaveWithReason('Tags', { tags: data });
+          // Tags don't require reason - direct update
+          updateStudyDirect(id, { tags: data });
+          toast.success('Tags updated');
         }}
       />
 
@@ -1585,8 +1587,10 @@ export default function StudyDetail() {
         open={addPublicationOpen}
         onClose={() => setAddPublicationOpen(false)}
         onSave={(pubData) => {
+          // Publications don't require reason - direct update
           const updatedPubs = [...study.publications, pubData];
-          handleSaveWithReason('Publications', { publications: updatedPubs });
+          updateStudyDirect(id, { publications: updatedPubs });
+          toast.success('Publication added');
         }}
       />
       
