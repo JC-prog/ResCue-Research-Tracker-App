@@ -11,8 +11,6 @@ import {
   BookMarked,
   Download,
   Upload,
-  ChevronLeft,
-  ChevronRight,
   PanelLeftClose,
   PanelLeft
 } from 'lucide-react';
@@ -61,21 +59,38 @@ export const Layout = ({ children }) => {
       <aside 
         className={`${collapsed ? 'w-16' : 'w-64'} flex-shrink-0 border-r border-border bg-card flex flex-col transition-all duration-300`}
       >
-        {/* Logo */}
-        <div className={`p-4 border-b border-border ${collapsed ? 'px-3' : 'p-6'}`}>
-          <div className="flex items-center gap-3">
-            <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-              <BookMarked className="w-6 h-6 text-primary-foreground" />
-              <span className="absolute -bottom-0.5 -right-0.5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full w-4 h-4 flex items-center justify-center border-2 border-card">
-                R
-              </span>
-            </div>
-            {!collapsed && (
-              <div>
-                <h1 className="text-xl font-bold tracking-tight font-[Manrope]">ResCue</h1>
-                <p className="text-xs text-muted-foreground">Research Management</p>
+        {/* Logo + Collapse Button */}
+        <div className={`p-4 border-b border-border ${collapsed ? 'px-3' : 'p-4'}`}>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+                <BookMarked className="w-6 h-6 text-primary-foreground" />
+                <span className="absolute -bottom-0.5 -right-0.5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full w-4 h-4 flex items-center justify-center border-2 border-card">
+                  R
+                </span>
               </div>
-            )}
+              {!collapsed && (
+                <div>
+                  <h1 className="text-xl font-bold tracking-tight font-[Manrope]">ResCue</h1>
+                  <p className="text-xs text-muted-foreground">Research Management</p>
+                </div>
+              )}
+            </div>
+            {/* Collapse Toggle - Top Right */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setCollapsed(!collapsed)}
+              data-testid="collapse-sidebar-btn"
+              title={collapsed ? "Expand" : "Collapse"}
+            >
+              {collapsed ? (
+                <PanelLeft className="w-4 h-4" />
+              ) : (
+                <PanelLeftClose className="w-4 h-4" />
+              )}
+            </Button>
           </div>
         </div>
 
@@ -105,24 +120,6 @@ export const Layout = ({ children }) => {
 
         {/* Bottom Actions */}
         <div className={`p-2 border-t border-border space-y-2 ${collapsed ? 'px-2' : 'p-4'}`}>
-          {/* Collapse Toggle */}
-          <Button
-            variant="ghost"
-            size={collapsed ? "icon" : "sm"}
-            className={collapsed ? "w-full" : "w-full justify-start"}
-            onClick={() => setCollapsed(!collapsed)}
-            data-testid="collapse-sidebar-btn"
-          >
-            {collapsed ? (
-              <PanelLeft className="w-5 h-5" />
-            ) : (
-              <>
-                <PanelLeftClose className="w-5 h-5 mr-3" />
-                Collapse
-              </>
-            )}
-          </Button>
-
           {/* Export/Import */}
           {!collapsed ? (
             <div className="flex gap-2">
