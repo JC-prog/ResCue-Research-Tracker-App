@@ -470,73 +470,50 @@ export default function AllStudies() {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            placeholder="Search studies by title, PI, or ECOS ref..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
-            data-testid="search-studies-input"
-          />
-        </div>
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-full sm:w-[180px]" data-testid="status-filter-select">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            {statusOptions.map(option => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+      <div className="relative max-w-md">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+        <Input
+          placeholder="Search studies by title, PI, or ECOS ref..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pl-10"
+          data-testid="search-studies-input"
+        />
       </div>
 
-      {/* Status Badges with Counts */}
-      <div className="flex flex-wrap gap-2">
-        <Badge
-          variant={statusFilter === 'all' ? 'default' : 'secondary'}
-          className="cursor-pointer"
-          onClick={() => setStatusFilter('all')}
-          data-testid="filter-all"
-        >
-          All ({studies.length})
-        </Badge>
-        <Badge
-          variant={statusFilter === 'active' ? 'default' : 'secondary'}
-          className="cursor-pointer bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50"
-          onClick={() => setStatusFilter('active')}
-          data-testid="filter-active"
-        >
-          Active ({statusCounts.active || 0})
-        </Badge>
-        <Badge
-          variant={statusFilter === 'completed' ? 'default' : 'secondary'}
-          className="cursor-pointer bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50"
-          onClick={() => setStatusFilter('completed')}
-          data-testid="filter-completed"
-        >
-          Completed ({statusCounts.completed || 0})
-        </Badge>
-        <Badge
-          variant={statusFilter === 'pending' ? 'default' : 'secondary'}
-          className="cursor-pointer bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 hover:bg-yellow-200 dark:hover:bg-yellow-900/50"
-          onClick={() => setStatusFilter('pending')}
-          data-testid="filter-pending"
-        >
-          Pending ({statusCounts.pending || 0})
-        </Badge>
-        <Badge
-          variant={statusFilter === 'on-hold' ? 'default' : 'secondary'}
-          className="cursor-pointer bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50"
-          onClick={() => setStatusFilter('on-hold')}
-          data-testid="filter-on-hold"
-        >
-          On Hold ({statusCounts['on-hold'] || 0})
-        </Badge>
+      {/* Status Filter */}
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="text-sm text-muted-foreground">Filter by status:</span>
+        {statusFilterOptions.map(status => (
+          <label 
+            key={status.value}
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full cursor-pointer transition-all ${
+              selectedStatuses.includes(status.value) 
+                ? status.color + ' ring-2 ring-offset-2 ring-primary/50' 
+                : 'bg-muted/50 hover:bg-muted'
+            }`}
+          >
+            <Checkbox
+              checked={selectedStatuses.includes(status.value)}
+              onCheckedChange={() => toggleStatus(status.value)}
+              className="w-4 h-4"
+              data-testid={`filter-status-${status.value}`}
+            />
+            <span className="text-sm font-medium">{status.label} ({statusCounts[status.value] || 0})</span>
+          </label>
+        ))}
+        {(selectedStatuses.length > 0 || searchQuery) && (
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={clearFilters}
+            className="text-muted-foreground hover:text-foreground"
+            data-testid="clear-filters-btn"
+          >
+            <X className="w-4 h-4 mr-1" />
+            Clear filters
+          </Button>
+        )}
       </div>
 
       {/* Studies Grid */}
