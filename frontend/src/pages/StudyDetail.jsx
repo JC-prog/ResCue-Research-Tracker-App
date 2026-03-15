@@ -1491,8 +1491,8 @@ export default function StudyDetail() {
           <CollapsibleContent>
             <CardContent>
               <div className="flex justify-end mb-4">
-                <Button onClick={() => setAddTaskOpen(true)} data-testid="add-task-btn">
-                  <Plus className="w-4 h-4 mr-2" /> Add Task
+                <Button variant="ghost" size="icon" onClick={() => setAddTaskOpen(true)} data-testid="add-task-btn" title="Add Task">
+                  <Plus className="w-5 h-5" />
                 </Button>
               </div>
               <div className="space-y-2">
@@ -1565,8 +1565,8 @@ export default function StudyDetail() {
           <CollapsibleContent>
             <CardContent>
               <div className="flex justify-end mb-4">
-                <Button onClick={() => setAddPublicationOpen(true)} data-testid="add-publication-btn">
-                  <Plus className="w-4 h-4 mr-2" /> Add Publication
+                <Button variant="ghost" size="icon" onClick={() => setAddPublicationOpen(true)} data-testid="add-publication-btn" title="Add Publication">
+                  <Plus className="w-5 h-5" />
                 </Button>
               </div>
               <div className="space-y-3">
