@@ -75,12 +75,11 @@ export const seedStudies = [
     tags: ['Neurology', 'VR Technology', 'Rehabilitation'],
     fund: {
       grantBody: 'American Heart Association',
-      ioCode: 'IO-AHA-2024-7892',
       categories: [
-        { name: 'Manpower', initial: 200000, used: 75000 },
-        { name: 'Equipment', initial: 80000, used: 65000 },
-        { name: 'Consumables', initial: 15000, used: 8000 },
-        { name: 'Travel', initial: 25000, used: 5000 }
+        { name: 'Manpower', ioCode: 'IO-AHA-MP-7892', initial: 200000, used: 75000 },
+        { name: 'Equipment', ioCode: 'IO-AHA-EQ-7893', initial: 80000, used: 65000 },
+        { name: 'Miscellaneous', ioCode: 'IO-AHA-MS-7894', initial: 15000, used: 8000 },
+        { name: 'Travel', ioCode: 'IO-AHA-TR-7895', initial: 25000, used: 5000 }
       ]
     },
     recruitment: {
@@ -127,12 +126,11 @@ export const seedStudies = [
     tags: ['Neurology', 'TBI', 'Neuroprotection', 'Multicenter'],
     fund: {
       grantBody: 'Department of Defense',
-      ioCode: 'IO-DOD-2023-1456',
       categories: [
-        { name: 'Manpower', initial: 350000, used: 348000 },
-        { name: 'Equipment', initial: 100000, used: 95000 },
-        { name: 'Consumables', initial: 75000, used: 72000 },
-        { name: 'Travel', initial: 50000, used: 48500 }
+        { name: 'Manpower', ioCode: 'IO-DOD-MP-1456', initial: 350000, used: 348000 },
+        { name: 'Equipment', ioCode: 'IO-DOD-EQ-1457', initial: 100000, used: 95000 },
+        { name: 'Miscellaneous', ioCode: 'IO-DOD-MS-1458', initial: 75000, used: 72000 },
+        { name: 'Travel', ioCode: 'IO-DOD-TR-1459', initial: 50000, used: 48500 }
       ]
     },
     recruitment: {
