@@ -979,6 +979,9 @@ export default function StudyDetail() {
   const [editDemographicsOpen, setEditDemographicsOpen] = useState(false);
   const [editTeamOpen, setEditTeamOpen] = useState(false);
   const [editTagsOpen, setEditTagsOpen] = useState(false);
+  const [addTaskOpen, setAddTaskOpen] = useState(false);
+  const [addPublicationOpen, setAddPublicationOpen] = useState(false);
+  const [publicationsOpen, setPublicationsOpen] = useState(true);
   
   // Change reason modal
   const [changeReasonOpen, setChangeReasonOpen] = useState(false);
