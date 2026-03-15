@@ -11,8 +11,8 @@ import {
   BookMarked,
   Download,
   Upload,
-  PanelLeftClose,
-  PanelLeft
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useData } from '../contexts/DataContext';
@@ -59,38 +59,34 @@ export const Layout = ({ children }) => {
       <aside 
         className={`${collapsed ? 'w-16' : 'w-64'} flex-shrink-0 border-r border-border bg-card flex flex-col transition-all duration-300`}
       >
-        {/* Logo + Collapse Button */}
-        <div className={`p-4 border-b border-border ${collapsed ? 'px-3' : 'p-4'}`}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-                <BookMarked className="w-6 h-6 text-primary-foreground" />
-                <span className="absolute -bottom-0.5 -right-0.5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full w-4 h-4 flex items-center justify-center border-2 border-card">
-                  R
-                </span>
+        {/* Logo - Clickable to toggle collapse */}
+        <div 
+          className={`p-3 border-b border-border cursor-pointer hover:bg-muted/50 transition-colors ${collapsed ? 'px-3' : 'px-4'}`}
+          onClick={() => setCollapsed(!collapsed)}
+          data-testid="collapse-sidebar-btn"
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
+              <BookMarked className="w-6 h-6 text-primary-foreground" />
+              <span className="absolute -bottom-0.5 -right-0.5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full w-4 h-4 flex items-center justify-center border-2 border-card">
+                R
+              </span>
+              {/* Collapse indicator */}
+              <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-card border border-border rounded-full flex items-center justify-center">
+                {collapsed ? (
+                  <ChevronRight className="w-2 h-2 text-muted-foreground" />
+                ) : (
+                  <ChevronLeft className="w-2 h-2 text-muted-foreground" />
+                )}
               </div>
-              {!collapsed && (
-                <div>
-                  <h1 className="text-xl font-bold tracking-tight font-[Manrope]">ResCue</h1>
-                  <p className="text-xs text-muted-foreground">Research Management</p>
-                </div>
-              )}
             </div>
-            {/* Collapse Toggle - Top Right */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setCollapsed(!collapsed)}
-              data-testid="collapse-sidebar-btn"
-              title={collapsed ? "Expand" : "Collapse"}
-            >
-              {collapsed ? (
-                <PanelLeft className="w-4 h-4" />
-              ) : (
-                <PanelLeftClose className="w-4 h-4" />
-              )}
-            </Button>
+            {!collapsed && (
+              <div>
+                <h1 className="text-xl font-bold tracking-tight font-[Manrope]">ResCue</h1>
+                <p className="text-xs text-muted-foreground">Research Management</p>
+              </div>
+            )}
           </div>
         </div>
 
