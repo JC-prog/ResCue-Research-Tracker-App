@@ -72,14 +72,6 @@ export const Layout = ({ children }) => {
               <span className="absolute -bottom-0.5 -right-0.5 text-[10px] font-bold text-primary-foreground bg-primary rounded-full w-4 h-4 flex items-center justify-center border-2 border-card">
                 R
               </span>
-              {/* Collapse indicator */}
-              <div className="absolute -right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 bg-card border border-border rounded-full flex items-center justify-center">
-                {collapsed ? (
-                  <ChevronRight className="w-2 h-2 text-muted-foreground" />
-                ) : (
-                  <ChevronLeft className="w-2 h-2 text-muted-foreground" />
-                )}
-              </div>
             </div>
             {!collapsed && (
               <div>
