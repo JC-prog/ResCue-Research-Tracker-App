@@ -959,7 +959,7 @@ const SectionHeader = ({ title, icon: Icon, onEdit }) => (
 export default function StudyDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getStudyById, updateStudy, updateTask, addTask, deleteTask } = useData();
+  const { getStudyById, updateStudy, updateStudyDirect, updateTask, addTask, deleteTask, deletePublication } = useData();
   
   const study = getStudyById(id);
   
