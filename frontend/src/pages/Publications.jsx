@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
-import { Search, BookOpen, ExternalLink, Calendar, FileText } from 'lucide-react';
+import { Search, BookOpen, ExternalLink, Calendar, FileText, Eye } from 'lucide-react';
 
 const typeColors = {
   'Journal Article': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
@@ -160,13 +160,13 @@ export default function Publications() {
                   </div>
                   {pub.link && (
                     <Button
-                      variant="outline"
-                      size="sm"
+                      variant="ghost"
+                      size="icon"
                       onClick={() => window.open(pub.link, '_blank')}
                       data-testid={`view-publication-${pub.id}`}
+                      title="View Publication"
                     >
-                      <ExternalLink className="w-4 h-4 mr-2" />
-                      View
+                      <ExternalLink className="w-4 h-4" />
                     </Button>
                   )}
                 </div>

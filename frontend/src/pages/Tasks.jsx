@@ -29,7 +29,8 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Clock,
-  Trash2
+  Trash2,
+  Eye
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -282,11 +283,12 @@ export default function Tasks() {
                     
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="icon"
                       onClick={() => navigate(`/studies/${task.studyId}`)}
                       data-testid={`view-study-${task.id}`}
+                      title="View Study"
                     >
-                      View Study
+                      <Eye className="w-4 h-4" />
                     </Button>
                     
                     <Button
