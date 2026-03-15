@@ -607,14 +607,15 @@ const EditDemographicsModal = ({ open, onClose, demographics, onSave }) => {
           
           <div className="space-y-4">
             <Label className="text-base font-semibold">Race/Ethnicity</Label>
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-2 mb-4 relative z-10">
               <Input
                 value={newEthnicity}
                 onChange={(e) => setNewEthnicity(e.target.value)}
                 placeholder="Add new race/ethnicity category..."
                 onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addEthnicity())}
+                data-testid="new-ethnicity-input"
               />
-              <Button type="button" onClick={addEthnicity}>Add</Button>
+              <Button type="button" onClick={addEthnicity} data-testid="add-ethnicity-btn">Add</Button>
             </div>
             <div className="space-y-3">
               {Object.entries(formData.ethnicity).map(([key, value]) => (
