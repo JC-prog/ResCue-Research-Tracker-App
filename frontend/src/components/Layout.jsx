@@ -89,12 +89,12 @@ export const Layout = ({ children }) => {
               data-testid={`nav-${label.toLowerCase().replace(' ', '-')}`}
               title={collapsed ? label : undefined}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                `flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   collapsed ? 'justify-center' : ''
                 } ${
                   isActive 
-                    ? 'bg-primary text-primary-foreground' 
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    ? 'bg-primary text-primary-foreground shadow-md' 
+                    : 'text-muted-foreground hover:bg-muted/70 hover:text-foreground hover:shadow-sm'
                 }`
               }
             >
