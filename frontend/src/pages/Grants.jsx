@@ -58,10 +58,11 @@ export default function Grants() {
 
   return (
     <div className="space-y-6 animate-fade-in" data-testid="grants-page">
-      <div>
+      <div className="flex items-center gap-3">
         <h1 className="text-4xl font-bold tracking-tight font-[Manrope]">Grants</h1>
-        <p className="text-muted-foreground mt-2">Browse all grants and their remaining funds</p>
+        <Badge variant="secondary" className="text-sm">{grants.length} total</Badge>
       </div>
+      <p className="text-muted-foreground">Browse all grants and their remaining funds</p>
 
       {/* Search Bar */}
       <div className="relative max-w-md">
