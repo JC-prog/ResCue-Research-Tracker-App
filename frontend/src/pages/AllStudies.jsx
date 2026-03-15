@@ -167,15 +167,16 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
     shortTitle: '',
     longTitle: '',
     pi: '',
-    phase: 'Phase I',
+    phase: '',
     status: 'pending',
     ecosRef: '',
     irbApprovalDate: new Date().toISOString().split('T')[0],
     irbExpiryDate: '',
-    grantStartDate: new Date().toISOString().split('T')[0],
+    grantStartDate: '',
     grantEndDate: '',
     targetEnrollment: 100,
     grantBody: '',
+    hasGrant: false,
     tags: []
   });
 
@@ -191,14 +192,17 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
     
     const newStudy = {
       ...formData,
-      fund: {
+      fund: formData.hasGrant ? {
         grantBody: formData.grantBody || 'TBD',
         categories: [
-          { name: 'Manpower', ioCode: 'IO-NEW-MP-0001', initial: 0, used: 0 },
-          { name: 'Equipment', ioCode: 'IO-NEW-EQ-0002', initial: 0, used: 0 },
-          { name: 'Miscellaneous', ioCode: 'IO-NEW-MS-0003', initial: 0, used: 0 },
-          { name: 'Travel', ioCode: 'IO-NEW-TR-0004', initial: 0, used: 0 }
+          { name: 'Manpower', ioCode: `IO-NEW-MP-${Date.now()}`, initial: 0, used: 0 },
+          { name: 'Equipment', ioCode: `IO-NEW-EQ-${Date.now()}`, initial: 0, used: 0 },
+          { name: 'Miscellaneous', ioCode: `IO-NEW-MS-${Date.now()}`, initial: 0, used: 0 },
+          { name: 'Travel', ioCode: `IO-NEW-TR-${Date.now()}`, initial: 0, used: 0 }
         ]
+      } : {
+        grantBody: 'No Grant',
+        categories: []
       },
       recruitment: {
         sites: [{ name: 'Primary Site', screened: 0, enrolled: 0, failed: 0 }]
@@ -218,15 +222,16 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
       shortTitle: '',
       longTitle: '',
       pi: '',
-      phase: 'Phase I',
+      phase: '',
       status: 'pending',
       ecosRef: '',
       irbApprovalDate: new Date().toISOString().split('T')[0],
       irbExpiryDate: '',
-      grantStartDate: new Date().toISOString().split('T')[0],
+      grantStartDate: '',
       grantEndDate: '',
       targetEnrollment: 100,
       grantBody: '',
+      hasGrant: false,
       tags: []
     });
     onClose();
@@ -280,17 +285,11 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
             </div>
             <div className="space-y-2">
               <Label>Phase</Label>
-              <Select value={formData.phase} onValueChange={(v) => setFormData({...formData, phase: v})}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Phase I">Phase I</SelectItem>
-                  <SelectItem value="Phase II">Phase II</SelectItem>
-                  <SelectItem value="Phase III">Phase III</SelectItem>
-                  <SelectItem value="Phase IV">Phase IV</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                value={formData.phase}
+                onChange={(e) => setFormData({...formData, phase: e.target.value})}
+                placeholder="e.g., Phase I, Phase II, Pilot, etc."
+              />
             </div>
           </div>
           
@@ -337,33 +336,51 @@ const AddStudyModal = ({ open, onClose, onSave }) => {
               />
             </div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label>Grant Start Date</Label>
-              <Input
-                type="date"
-                value={formData.grantStartDate}
-                onChange={(e) => setFormData({...formData, grantStartDate: e.target.value})}
+
+          {/* Grant Section - Optional */}
+          <div className="border rounded-lg p-4 space-y-4">
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="hasGrant"
+                checked={formData.hasGrant}
+                onChange={(e) => setFormData({...formData, hasGrant: e.target.checked})}
+                className="w-4 h-4"
               />
+              <Label htmlFor="hasGrant" className="cursor-pointer font-medium">This study has a grant</Label>
             </div>
-            <div className="space-y-2">
-              <Label>Grant End Date</Label>
-              <Input
-                type="date"
-                value={formData.grantEndDate}
-                onChange={(e) => setFormData({...formData, grantEndDate: e.target.value})}
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label>Grant Body</Label>
-            <Input
-              value={formData.grantBody}
-              onChange={(e) => setFormData({...formData, grantBody: e.target.value})}
-              placeholder="e.g., National Institutes of Health"
-            />
+            
+            {formData.hasGrant && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>Grant Start Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.grantStartDate}
+                      onChange={(e) => setFormData({...formData, grantStartDate: e.target.value})}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Grant End Date</Label>
+                    <Input
+                      type="date"
+                      value={formData.grantEndDate}
+                      onChange={(e) => setFormData({...formData, grantEndDate: e.target.value})}
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label>Grant Body</Label>
+                  <Input
+                    value={formData.grantBody}
+                    onChange={(e) => setFormData({...formData, grantBody: e.target.value})}
+                    placeholder="e.g., National Institutes of Health"
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
         <DialogFooter>
