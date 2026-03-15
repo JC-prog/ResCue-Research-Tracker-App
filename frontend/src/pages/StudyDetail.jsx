@@ -1522,9 +1522,10 @@ export default function StudyDetail() {
         open={editRecruitmentOpen}
         onClose={() => setEditRecruitmentOpen(false)}
         recruitment={study.recruitment}
-        onSave={(data) => {
+        targetEnrollment={study.targetEnrollment}
+        onSave={(data, newTarget) => {
           setEditRecruitmentOpen(false);
-          handleSaveWithReason('Recruitment', { recruitment: data });
+          handleSaveWithReason('Recruitment', { recruitment: data, targetEnrollment: newTarget });
         }}
       />
       
@@ -1555,6 +1556,24 @@ export default function StudyDetail() {
         onSave={(data) => {
           setEditTagsOpen(false);
           handleSaveWithReason('Tags', { tags: data });
+        }}
+      />
+
+      <AddTaskModal
+        open={addTaskOpen}
+        onClose={() => setAddTaskOpen(false)}
+        onSave={(taskData) => {
+          addTask(id, taskData);
+          toast.success('Task added successfully');
+        }}
+      />
+
+      <AddPublicationModal
+        open={addPublicationOpen}
+        onClose={() => setAddPublicationOpen(false)}
+        onSave={(pubData) => {
+          const updatedPubs = [...study.publications, pubData];
+          handleSaveWithReason('Publications', { publications: updatedPubs });
         }}
       />
       
