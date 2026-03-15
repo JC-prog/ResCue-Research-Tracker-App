@@ -25,6 +25,14 @@ export const DataProvider = ({ children }) => {
     return studies.find(s => s.id === id);
   }, [studies]);
 
+  // Mark study as opened (updates lastOpened timestamp)
+  const markStudyOpened = useCallback((id) => {
+    setStudies(prev => prev.map(study => {
+      if (study.id !== id) return study;
+      return { ...study, lastOpened: new Date().toISOString() };
+    }));
+  }, []);
+
   const updateStudy = useCallback((id, updates, changeReason, changeNote = '') => {
     setStudies(prev => prev.map(study => {
       if (study.id !== id) return study;
