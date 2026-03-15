@@ -1475,11 +1475,24 @@ export default function StudyDetail() {
                         {new Date(pub.date).toLocaleDateString()}
                       </p>
                     </div>
-                    {pub.link && (
-                      <Button variant="ghost" size="sm" onClick={() => window.open(pub.link, '_blank')}>
-                        <ExternalLink className="w-4 h-4" />
+                    <div className="flex items-center gap-1">
+                      {pub.link && (
+                        <Button variant="ghost" size="sm" onClick={() => window.open(pub.link, '_blank')}>
+                          <ExternalLink className="w-4 h-4" />
+                        </Button>
+                      )}
+                      <Button 
+                        variant="ghost" 
+                        size="icon"
+                        onClick={() => {
+                          deletePublication(id, pub.id);
+                          toast.success('Publication deleted');
+                        }}
+                        data-testid={`delete-publication-${pub.id}`}
+                      >
+                        <Trash2 className="w-4 h-4 text-destructive" />
                       </Button>
-                    )}
+                    </div>
                   </div>
                 ))}
                 {study.publications.length === 0 && (
