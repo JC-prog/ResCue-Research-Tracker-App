@@ -1196,9 +1196,31 @@ export default function StudyDetail() {
           </CardHeader>
           <CollapsibleContent>
             <CardContent>
+              {/* Total Summary */}
+              <div className={`p-4 rounded-lg mb-4 ${getBudgetBgColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <span className="text-xs text-muted-foreground block mb-1">Total Awarded</span>
+                    <span className="text-xl font-bold tabular-nums">{formatCurrency(totalBudget)}</span>
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground block mb-1">Total Used</span>
+                    <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(usedBudget)}</span>
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground block mb-1">Total Remaining</span>
+                    <span className={`text-xl font-bold tabular-nums ${getBudgetColor((totalBudget - usedBudget) / totalBudget * 100)}`}>
+                      {formatCurrency(totalBudget - usedBudget)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Category Details */}
               <div className="space-y-4">
                 {study.fund.categories.map((cat, i) => {
                   const remaining = cat.initial - cat.used;
+                  const percentRemaining = cat.initial > 0 ? (remaining / cat.initial) * 100 : 0;
                   const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
                   return (
                     <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
@@ -1217,9 +1239,9 @@ export default function StudyDetail() {
                       <div className="flex justify-between text-sm">
                         <div className="flex gap-6">
                           <span className="text-muted-foreground">
-                            Used: <span className="font-medium text-foreground tabular-nums">{formatCurrency(cat.used)}</span>
+                            Used: <span className="font-medium text-red-600 dark:text-red-400 tabular-nums">{formatCurrency(cat.used)}</span>
                           </span>
-                          <span className="text-green-600 dark:text-green-400 font-medium">
+                          <span className={`font-medium ${getBudgetColor(percentRemaining)}`}>
                             Remaining: <span className="tabular-nums">{formatCurrency(remaining)}</span>
                           </span>
                         </div>
