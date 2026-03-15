@@ -93,8 +93,8 @@ export const Layout = ({ children }) => {
                   collapsed ? 'justify-center' : ''
                 } ${
                   isActive 
-                    ? 'bg-primary text-primary-foreground shadow-md dark:shadow-primary/20' 
-                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-sm dark:hover:bg-accent/80'
+                    ? 'bg-primary text-primary-foreground shadow-md dark:shadow-primary/30' 
+                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground hover:shadow-md dark:hover:bg-slate-700 dark:hover:text-white dark:hover:shadow-lg dark:hover:shadow-slate-900/50'
                 }`
               }
             >
