@@ -1168,7 +1168,7 @@ export default function StudyDetail() {
                 </div>
                 <div>
                   <Label className="text-muted-foreground">Grant Approval Period</Label>
-                  {totalBudget > 0 ? (
+                  {study.grantStartDate && study.grantEndDate && study.fund.grantBody !== 'No Grant' ? (
                     <div className="flex items-center gap-2 mt-1">
                       <p className="text-sm">{new Date(study.grantStartDate).toLocaleDateString()} - {new Date(study.grantEndDate).toLocaleDateString()}</p>
                       <Badge className={`${grantExpiry.color} border-0 text-xs flex items-center gap-1`}>
