@@ -116,12 +116,12 @@ const getExpiryBadge = (dateStr) => {
     return { color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400', text: 'Expired' };
   }
   if (daysRemaining <= 30) {
-    return { color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400', text: `${daysRemaining} days` };
+    return { color: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400', text: `${daysRemaining}d` };
   }
   if (daysRemaining <= 60) {
-    return { color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400', text: `${daysRemaining} days` };
+    return { color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400', text: `${daysRemaining}d` };
   }
-  return { color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400', text: '> 60 days' };
+  return { color: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400', text: `${daysRemaining}d` };
 };
 
 const CHART_COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];

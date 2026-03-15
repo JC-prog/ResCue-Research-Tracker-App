@@ -125,8 +125,8 @@ export default function Grants() {
                             data={grant.categories.map(cat => ({
                               name: cat.name,
                               ioCode: cat.ioCode || 'N/A',
-                              used: cat.used,
-                              remaining: cat.initial - cat.used,
+                              Used: cat.used,
+                              Remaining: cat.initial - cat.used,
                               initial: cat.initial
                             }))}
                             layout="vertical"
@@ -140,21 +140,21 @@ export default function Grants() {
                               tick={{ fontSize: 12 }}
                             />
                             <Tooltip 
-                              formatter={(value, name) => [formatCurrency(value), name === 'used' ? 'Used' : 'Remaining']}
+                              formatter={(value, name) => [formatCurrency(value), name]}
                               labelFormatter={(label) => {
                                 const cat = grant.categories.find(c => c.name === label);
                                 return `${label} (${cat?.ioCode || 'N/A'})`;
                               }}
                             />
-                            <Bar dataKey="used" stackId="a" fill="#ef4444" name="Used" />
-                            <Bar dataKey="remaining" stackId="a" fill="#22c55e" name="Remaining" radius={[0, 4, 4, 0]} />
+                            <Bar dataKey="Used" stackId="a" fill="#ef4444" name="Used" />
+                            <Bar dataKey="Remaining" stackId="a" fill="#22c55e" name="Remaining" radius={[0, 4, 4, 0]} />
                           </BarChart>
                         </ResponsiveContainer>
                       </div>
                     </div>
                     
-                    {/* Summary Numbers - 1 column on right, no background highlight */}
-                    <div className="lg:col-span-1 p-4 rounded-lg border border-border flex flex-col justify-center items-center space-y-3 min-h-[180px]">
+                    {/* Summary Numbers - 1 column on right, clean design */}
+                    <div className="lg:col-span-1 p-4 rounded-lg flex flex-col justify-center items-center space-y-3 min-h-[180px]">
                       <div className="text-center">
                         <span className="text-xs text-muted-foreground block mb-1">Awarded</span>
                         <span className="text-xl font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>

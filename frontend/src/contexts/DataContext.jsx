@@ -128,16 +128,19 @@ export const DataProvider = ({ children }) => {
   }, [studies]);
 
   const getAllGrants = useCallback(() => {
-    return studies.map(study => ({
-      studyId: study.id,
-      studyTitle: study.shortTitle,
-      status: study.status,
-      ioCode: study.fund.ioCode,
-      grantBody: study.fund.grantBody,
-      categories: study.fund.categories,
-      grantStartDate: study.grantStartDate,
-      grantEndDate: study.grantEndDate
-    }));
+    // Filter out studies without funds (no categories or empty categories)
+    return studies
+      .filter(study => study.fund.categories && study.fund.categories.length > 0)
+      .map(study => ({
+        studyId: study.id,
+        studyTitle: study.shortTitle,
+        status: study.status,
+        ioCode: study.fund.ioCode,
+        grantBody: study.fund.grantBody,
+        categories: study.fund.categories,
+        grantStartDate: study.grantStartDate,
+        grantEndDate: study.grantEndDate
+      }));
   }, [studies]);
 
   const getAllPublications = useCallback(() => {
