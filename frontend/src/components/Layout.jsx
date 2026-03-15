@@ -10,9 +10,7 @@ import {
   Sun,
   BookMarked,
   Download,
-  Upload,
-  ChevronLeft,
-  ChevronRight
+  Upload
 } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useData } from '../contexts/DataContext';
