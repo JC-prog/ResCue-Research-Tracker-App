@@ -651,29 +651,45 @@ const EditTagsModal = ({ open, onClose, tags, onSave }) => {
     setTagList(tagList.filter(t => t !== tag));
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addTag();
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onClose}>
       <DialogContent data-testid="edit-tags-modal">
         <DialogHeader>
           <DialogTitle>Edit Tags</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4 py-4">
+        <div className="space-y-4 py-4 relative z-10">
           <div className="flex gap-2">
             <Input
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
               placeholder="Add a tag..."
-              onKeyPress={(e) => e.key === 'Enter' && addTag()}
+              onKeyDown={handleKeyDown}
+              data-testid="new-tag-input"
             />
-            <Button onClick={addTag}>Add</Button>
+            <Button 
+              type="button" 
+              onClick={addTag}
+              data-testid="add-tag-btn"
+            >
+              Add
+            </Button>
           </div>
           <div className="flex flex-wrap gap-2">
             {tagList.map(tag => (
               <Badge key={tag} variant="secondary" className="text-sm py-1 px-3">
                 {tag}
                 <button 
+                  type="button"
                   onClick={() => removeTag(tag)} 
                   className="ml-2 hover:text-destructive"
+                  data-testid={`remove-tag-${tag}`}
                 >
                   ×
                 </button>
