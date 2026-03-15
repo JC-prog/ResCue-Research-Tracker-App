@@ -196,7 +196,7 @@ export default function Dashboard() {
             onClick={() => navigate('/studies')}
             data-testid="recent-studies-title"
           >
-            Recent Studies
+            Recently Opened
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {recentStudies.map(study => (

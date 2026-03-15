@@ -146,6 +146,7 @@ export default function Grants() {
                                 const cat = grant.categories.find(c => c.name === label);
                                 return `${label} (${cat?.ioCode || 'N/A'})`;
                               }}
+                              contentStyle={{ color: '#000' }}
                             />
                             <Bar dataKey="Used" stackId="a" fill="#ef4444" name="Used" />
                             <Bar dataKey="Remaining" stackId="a" fill="#22c55e" name="Remaining" radius={[0, 4, 4, 0]} />
