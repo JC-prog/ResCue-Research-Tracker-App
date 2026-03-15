@@ -99,6 +99,24 @@ export const DataProvider = ({ children }) => {
     }));
   }, []);
 
+  const deletePublication = useCallback((studyId, pubId) => {
+    setStudies(prev => prev.map(study => {
+      if (study.id !== studyId) return study;
+      return {
+        ...study,
+        publications: study.publications.filter(p => p.id !== pubId)
+      };
+    }));
+  }, []);
+
+  const updateStudyDirect = useCallback((id, updates) => {
+    // Direct update without audit trail (for optional reason changes like tags/publications)
+    setStudies(prev => prev.map(study => {
+      if (study.id !== id) return study;
+      return { ...study, ...updates };
+    }));
+  }, []);
+
   const getAllTasks = useCallback(() => {
     return studies.flatMap(study => 
       study.tasks.map(task => ({
