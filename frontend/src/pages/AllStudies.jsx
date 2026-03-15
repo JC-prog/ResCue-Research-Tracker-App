@@ -6,6 +6,8 @@ import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
 import { Progress } from '../components/ui/progress';
 import { Button } from '../components/ui/button';
+import { Label } from '../components/ui/label';
+import { Textarea } from '../components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -13,7 +15,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../components/ui/select';
-import { Search, Users, Plus } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '../components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '../components/ui/alert-dialog';
+import { Search, Users, Plus, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 const statusOptions = [
   { value: 'all', label: 'All Statuses' },
@@ -38,7 +59,7 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-const StudyCard = ({ study, onClick }) => {
+const StudyCard = ({ study, onClick, onDelete }) => {
   const totalEnrolled = study.recruitment.sites.reduce((sum, site) => sum + site.enrolled, 0);
   const enrollmentProgress = study.targetEnrollment > 0 
     ? (totalEnrolled / study.targetEnrollment) * 100 
@@ -48,14 +69,28 @@ const StudyCard = ({ study, onClick }) => {
   const usedBudget = study.fund.categories.reduce((sum, cat) => sum + cat.used, 0);
   const budgetProgress = totalBudget > 0 ? (usedBudget / totalBudget) * 100 : 0;
 
+  const handleDelete = (e) => {
+    e.stopPropagation();
+    onDelete(study);
+  };
+
   return (
     <Card 
-      className="cursor-pointer hover:shadow-md transition-shadow animate-fade-in"
+      className="cursor-pointer hover:shadow-md transition-shadow animate-fade-in relative group"
       onClick={onClick}
       data-testid={`study-card-${study.shortTitle.toLowerCase().replace(/\s+/g, '-')}`}
     >
+      <Button
+        variant="ghost"
+        size="icon"
+        className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+        onClick={handleDelete}
+        data-testid={`delete-study-${study.id}`}
+      >
+        <Trash2 className="w-4 h-4 text-destructive" />
+      </Button>
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
+        <div className="flex items-start justify-between pr-8">
           <div>
             <CardTitle className="text-lg font-[Manrope]">{study.shortTitle}</CardTitle>
             <p className="text-sm text-muted-foreground mt-1">{study.pi}</p>
@@ -107,12 +142,230 @@ const StudyCard = ({ study, onClick }) => {
   );
 };
 
+// Add Study Modal
+const AddStudyModal = ({ open, onClose, onSave }) => {
+  const [formData, setFormData] = useState({
+    shortTitle: '',
+    longTitle: '',
+    pi: '',
+    phase: 'Phase I',
+    status: 'pending',
+    ecosRef: '',
+    irbApprovalDate: new Date().toISOString().split('T')[0],
+    irbExpiryDate: '',
+    grantStartDate: new Date().toISOString().split('T')[0],
+    grantEndDate: '',
+    targetEnrollment: 100,
+    grantBody: '',
+    tags: []
+  });
+
+  const handleSave = () => {
+    if (!formData.shortTitle.trim()) {
+      toast.error('Please enter a short title');
+      return;
+    }
+    if (!formData.pi.trim()) {
+      toast.error('Please enter a Principal Investigator');
+      return;
+    }
+    
+    const newStudy = {
+      ...formData,
+      fund: {
+        grantBody: formData.grantBody || 'TBD',
+        categories: [
+          { name: 'Manpower', ioCode: 'IO-NEW-MP-0001', initial: 0, used: 0 },
+          { name: 'Equipment', ioCode: 'IO-NEW-EQ-0002', initial: 0, used: 0 },
+          { name: 'Miscellaneous', ioCode: 'IO-NEW-MS-0003', initial: 0, used: 0 },
+          { name: 'Travel', ioCode: 'IO-NEW-TR-0004', initial: 0, used: 0 }
+        ]
+      },
+      recruitment: {
+        sites: [{ name: 'Primary Site', screened: 0, enrolled: 0, failed: 0 }]
+      },
+      demographics: {
+        gender: { male: 0, female: 0, other: 0 },
+        ethnicity: {}
+      },
+      team: [],
+      tasks: [],
+      publications: [],
+      history: []
+    };
+    
+    onSave(newStudy);
+    setFormData({
+      shortTitle: '',
+      longTitle: '',
+      pi: '',
+      phase: 'Phase I',
+      status: 'pending',
+      ecosRef: '',
+      irbApprovalDate: new Date().toISOString().split('T')[0],
+      irbExpiryDate: '',
+      grantStartDate: new Date().toISOString().split('T')[0],
+      grantEndDate: '',
+      targetEnrollment: 100,
+      grantBody: '',
+      tags: []
+    });
+    onClose();
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto" data-testid="add-study-modal">
+        <DialogHeader>
+          <DialogTitle>Add New Study</DialogTitle>
+          <DialogDescription>Create a new research study entry</DialogDescription>
+        </DialogHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Short Title *</Label>
+              <Input
+                value={formData.shortTitle}
+                onChange={(e) => setFormData({...formData, shortTitle: e.target.value})}
+                placeholder="e.g., CardioFit"
+                data-testid="study-short-title-input"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>ECOS Reference</Label>
+              <Input
+                value={formData.ecosRef}
+                onChange={(e) => setFormData({...formData, ecosRef: e.target.value})}
+                placeholder="e.g., ECOS-2025-001"
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Long Title</Label>
+            <Textarea
+              value={formData.longTitle}
+              onChange={(e) => setFormData({...formData, longTitle: e.target.value})}
+              placeholder="Full study title..."
+            />
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Principal Investigator *</Label>
+              <Input
+                value={formData.pi}
+                onChange={(e) => setFormData({...formData, pi: e.target.value})}
+                placeholder="Dr. Jane Smith"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Phase</Label>
+              <Select value={formData.phase} onValueChange={(v) => setFormData({...formData, phase: v})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Phase I">Phase I</SelectItem>
+                  <SelectItem value="Phase II">Phase II</SelectItem>
+                  <SelectItem value="Phase III">Phase III</SelectItem>
+                  <SelectItem value="Phase IV">Phase IV</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Status</Label>
+              <Select value={formData.status} onValueChange={(v) => setFormData({...formData, status: v})}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="active">Active</SelectItem>
+                  <SelectItem value="pending">Pending</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="on-hold">On Hold</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Target Enrollment</Label>
+              <Input
+                type="number"
+                value={formData.targetEnrollment}
+                onChange={(e) => setFormData({...formData, targetEnrollment: parseInt(e.target.value) || 0})}
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>IRB Approval Date</Label>
+              <Input
+                type="date"
+                value={formData.irbApprovalDate}
+                onChange={(e) => setFormData({...formData, irbApprovalDate: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>IRB Expiry Date</Label>
+              <Input
+                type="date"
+                value={formData.irbExpiryDate}
+                onChange={(e) => setFormData({...formData, irbExpiryDate: e.target.value})}
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Grant Start Date</Label>
+              <Input
+                type="date"
+                value={formData.grantStartDate}
+                onChange={(e) => setFormData({...formData, grantStartDate: e.target.value})}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Grant End Date</Label>
+              <Input
+                type="date"
+                value={formData.grantEndDate}
+                onChange={(e) => setFormData({...formData, grantEndDate: e.target.value})}
+              />
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Label>Grant Body</Label>
+            <Input
+              value={formData.grantBody}
+              onChange={(e) => setFormData({...formData, grantBody: e.target.value})}
+              placeholder="e.g., National Institutes of Health"
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline" onClick={onClose}>Cancel</Button>
+          <Button onClick={handleSave} data-testid="save-new-study-btn">Create Study</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export default function AllStudies() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { studies } = useData();
+  const { studies, addStudy, deleteStudy } = useData();
   
   const [searchQuery, setSearchQuery] = useState('');
+  const [addStudyOpen, setAddStudyOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [studyToDelete, setStudyToDelete] = useState(null);
+  
   const statusFilter = searchParams.get('status') || 'all';
 
   const setStatusFilter = (value) => {
@@ -145,6 +398,25 @@ export default function AllStudies() {
     }, {});
   }, [studies]);
 
+  const handleDeleteClick = (study) => {
+    setStudyToDelete(study);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (studyToDelete) {
+      deleteStudy(studyToDelete.id);
+      toast.success(`Study "${studyToDelete.shortTitle}" deleted`);
+      setStudyToDelete(null);
+    }
+    setDeleteConfirmOpen(false);
+  };
+
+  const handleAddStudy = (newStudy) => {
+    addStudy(newStudy);
+    toast.success(`Study "${newStudy.shortTitle}" created`);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in" data-testid="all-studies-page">
       <div className="flex items-center justify-between">
@@ -152,6 +424,9 @@ export default function AllStudies() {
           <h1 className="text-4xl font-bold tracking-tight font-[Manrope]">All Studies</h1>
           <p className="text-muted-foreground mt-2">Manage and monitor your research portfolio</p>
         </div>
+        <Button onClick={() => setAddStudyOpen(true)} data-testid="add-study-btn">
+          <Plus className="w-4 h-4 mr-2" /> Add Study
+        </Button>
       </div>
 
       {/* Filter Bar */}
@@ -227,12 +502,10 @@ export default function AllStudies() {
       {/* Studies Grid */}
       {filteredStudies.length === 0 ? (
         <Card className="p-12 text-center">
-          <img 
-            src="https://images.unsplash.com/photo-1576669801838-1b1c52121e6a?w=400" 
-            alt="No studies" 
-            className="w-48 h-32 object-cover mx-auto rounded-lg mb-4 opacity-50"
-          />
-          <p className="text-muted-foreground">No studies found matching your criteria</p>
+          <p className="text-muted-foreground mb-4">No studies found matching your criteria</p>
+          <Button onClick={() => setAddStudyOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" /> Create Your First Study
+          </Button>
         </Card>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -241,10 +514,40 @@ export default function AllStudies() {
               key={study.id}
               study={study}
               onClick={() => navigate(`/studies/${study.id}`)}
+              onDelete={handleDeleteClick}
             />
           ))}
         </div>
       )}
+
+      {/* Add Study Modal */}
+      <AddStudyModal
+        open={addStudyOpen}
+        onClose={() => setAddStudyOpen(false)}
+        onSave={handleAddStudy}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+        <AlertDialogContent data-testid="delete-study-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Study</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{studyToDelete?.shortTitle}"? This action cannot be undone and will remove all associated data including tasks, publications, and history.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={confirmDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              data-testid="confirm-delete-study-btn"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
