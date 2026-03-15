@@ -1104,12 +1104,13 @@ export default function StudyDetail() {
             History
           </Button>
           <Button 
-            variant="destructive" 
+            variant="ghost" 
+            size="icon"
             onClick={() => setDeleteStudyOpen(true)} 
             data-testid="delete-study-btn"
+            title="Delete Study"
           >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Study
+            <Trash2 className="w-4 h-4 text-destructive" />
           </Button>
         </div>
       </div>
