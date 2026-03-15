@@ -1539,8 +1539,8 @@ export default function StudyDetail() {
                         variant="ghost" 
                         size="icon"
                         onClick={() => {
-                          deletePublication(id, pub.id);
-                          toast.success('Publication deleted');
+                          setPublicationToDelete(pub);
+                          setDeletePublicationOpen(true);
                         }}
                         data-testid={`delete-publication-${pub.id}`}
                       >
