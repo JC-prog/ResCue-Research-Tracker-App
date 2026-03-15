@@ -240,14 +240,16 @@ export default function Tasks() {
                 return (
                   <div 
                     key={task.id}
-                    className={`flex items-center gap-4 p-4 hover:bg-muted/50 transition-colors ${
+                    className={`flex items-center gap-4 p-4 hover:bg-muted/50 transition-colors cursor-pointer ${
                       task.completed ? 'opacity-60' : ''
                     }`}
                     data-testid={`task-row-${task.id}`}
+                    onClick={() => navigate(`/studies/${task.studyId}`)}
                   >
                     <Checkbox
                       checked={task.completed}
                       onCheckedChange={() => handleToggleComplete(task.studyId, task.id, task.completed)}
+                      onClick={(e) => e.stopPropagation()}
                       data-testid={`task-checkbox-${task.id}`}
                     />
                     
@@ -261,12 +263,7 @@ export default function Tasks() {
                         )}
                       </div>
                       <div className="flex items-center gap-3 mt-1 text-sm text-muted-foreground">
-                        <button 
-                          onClick={() => navigate(`/studies/${task.studyId}`)}
-                          className="hover:text-primary hover:underline"
-                        >
-                          {task.studyTitle}
-                        </button>
+                        <span>{task.studyTitle}</span>
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3" />
                           <span className={`
@@ -284,17 +281,8 @@ export default function Tasks() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => navigate(`/studies/${task.studyId}`)}
-                      data-testid={`view-study-${task.id}`}
-                      title="View Study"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         setTaskToDelete(task);
                         setDeleteTaskOpen(true);
                       }}
