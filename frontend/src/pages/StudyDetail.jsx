@@ -52,7 +52,9 @@ import {
   Plus,
   Trash2,
   CheckCircle2,
-  Clock
+  Clock,
+  BookOpen,
+  ExternalLink
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
