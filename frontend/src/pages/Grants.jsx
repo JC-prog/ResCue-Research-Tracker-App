@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge';
 import { Progress } from '../components/ui/progress';
 import { Input } from '../components/ui/input';
-import { Search, Calendar, Building2, DollarSign } from 'lucide-react';
+import { Search, Calendar, Building2 } from 'lucide-react';
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-US', {
@@ -92,7 +92,7 @@ export default function Grants() {
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <CardTitle className="text-xl font-[Manrope]">{grant.studyTitle}</CardTitle>
-                      <div className="flex items-center gap-3 mt-2">
+                      <div className="flex items-center gap-3 mt-2 flex-wrap">
                         <Badge className="bg-primary/10 text-primary border-primary/20 font-semibold text-sm py-1 px-3">
                           <Building2 className="w-4 h-4 mr-2" />
                           {grant.grantBody}
@@ -106,49 +106,52 @@ export default function Grants() {
                         <StatusBadge status={grant.status} />
                       </div>
                     </div>
-                    
-                    {/* Summary Numbers on the Right */}
-                    <div className="text-right space-y-1">
-                      <div className="flex items-center justify-end gap-2">
-                        <span className="text-sm text-muted-foreground">Awarded:</span>
-                        <span className="text-lg font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>
-                      </div>
-                      <div className="flex items-center justify-end gap-2">
-                        <span className="text-sm text-muted-foreground">Used:</span>
-                        <span className="text-lg font-bold tabular-nums text-yellow-600 dark:text-yellow-400">{formatCurrency(totalUsed)}</span>
-                      </div>
-                      <div className="flex items-center justify-end gap-2">
-                        <span className="text-sm text-muted-foreground">Remaining:</span>
-                        <span className="text-xl font-bold tabular-nums text-green-600 dark:text-green-400">{formatCurrency(totalLeft)}</span>
-                      </div>
-                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    {grant.categories.map((cat, i) => {
-                      const remaining = cat.initial - cat.used;
-                      const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
-                      return (
-                        <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-sm">{cat.name}</span>
-                            <Badge variant="outline" className="font-mono text-xs">
-                              {cat.ioCode || 'N/A'}
-                            </Badge>
+                  <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+                    {/* Fund Categories - 4 columns */}
+                    <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {grant.categories.map((cat, i) => {
+                        const remaining = cat.initial - cat.used;
+                        const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
+                        return (
+                          <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
+                            <div className="text-center">
+                              <span className="font-semibold text-sm block">{cat.name}</span>
+                              <Badge variant="outline" className="font-mono text-xs mt-1">
+                                {cat.ioCode || 'N/A'}
+                              </Badge>
+                            </div>
+                            <Progress value={percentUsed} className="h-2" />
+                            <div className="text-center space-y-1">
+                              <div className="text-xs text-muted-foreground">
+                                {formatCurrency(cat.used)} used
+                              </div>
+                              <div className="text-sm text-green-600 dark:text-green-400 font-semibold">
+                                {formatCurrency(remaining)} left
+                              </div>
+                            </div>
                           </div>
-                          <Progress value={percentUsed} className="h-2" />
-                          <div className="flex justify-between text-xs">
-                            <span className="text-muted-foreground">
-                              {formatCurrency(cat.used)} used
-                            </span>
-                            <span className="text-green-600 dark:text-green-400 font-medium">
-                              {formatCurrency(remaining)} left
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
+                    </div>
+                    
+                    {/* Summary Numbers - 1 column on right */}
+                    <div className="lg:col-span-1 p-4 rounded-lg bg-muted/50 flex flex-col justify-center space-y-3">
+                      <div className="text-center">
+                        <span className="text-xs text-muted-foreground block">Awarded</span>
+                        <span className="text-xl font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="text-xs text-muted-foreground block">Used</span>
+                        <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(totalUsed)}</span>
+                      </div>
+                      <div className="text-center border-t border-border pt-3">
+                        <span className="text-xs text-muted-foreground block">Remaining</span>
+                        <span className="text-2xl font-bold tabular-nums text-green-600 dark:text-green-400">{formatCurrency(totalLeft)}</span>
+                      </div>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
