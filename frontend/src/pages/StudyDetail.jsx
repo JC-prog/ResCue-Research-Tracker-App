@@ -1498,9 +1498,9 @@ export default function StudyDetail() {
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold font-[Manrope]">Tasks</h3>
-                <Badge variant="secondary" className="ml-2">
-                  {study.tasks.filter(t => !t.completed).length} pending
-                </Badge>
+                <span className="ml-2 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
+                  {study.tasks.filter(t => !t.completed).length}
+                </span>
               </div>
               {tasksOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </CollapsibleTrigger>
@@ -1572,9 +1572,9 @@ export default function StudyDetail() {
               <div className="flex items-center gap-2">
                 <BookOpen className="w-5 h-5 text-primary" />
                 <h3 className="text-lg font-semibold font-[Manrope]">Publications</h3>
-                <Badge variant="secondary" className="ml-2">
+                <span className="ml-2 w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-medium flex items-center justify-center">
                   {study.publications.length}
-                </Badge>
+                </span>
               </div>
               {publicationsOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </CollapsibleTrigger>
