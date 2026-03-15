@@ -19,12 +19,12 @@ import {
   AlertTriangle, 
   CheckCircle2, 
   Clock,
-  ArrowUpDown
+  Trash2
 } from 'lucide-react';
 
 export default function Tasks() {
   const navigate = useNavigate();
-  const { getAllTasks, updateTask } = useData();
+  const { getAllTasks, updateTask, deleteTask } = useData();
   const allTasks = getAllTasks();
   
   const [searchQuery, setSearchQuery] = useState('');
