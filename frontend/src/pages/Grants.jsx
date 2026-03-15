@@ -16,6 +16,18 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
+const getBudgetColor = (percentRemaining) => {
+  if (percentRemaining > 50) return 'text-green-600 dark:text-green-400';
+  if (percentRemaining > 20) return 'text-yellow-600 dark:text-yellow-400';
+  return 'text-red-600 dark:text-red-400';
+};
+
+const getBudgetBgColor = (percentRemaining) => {
+  if (percentRemaining > 50) return 'bg-green-100 dark:bg-green-900/30';
+  if (percentRemaining > 20) return 'bg-yellow-100 dark:bg-yellow-900/30';
+  return 'bg-red-100 dark:bg-red-900/30';
+};
+
 const StatusBadge = ({ status }) => {
   const styles = {
     active: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
@@ -80,6 +92,7 @@ export default function Grants() {
             const totalAwarded = grant.categories.reduce((sum, cat) => sum + cat.initial, 0);
             const totalUsed = grant.categories.reduce((sum, cat) => sum + cat.used, 0);
             const totalLeft = totalAwarded - totalUsed;
+            const percentRemaining = totalAwarded > 0 ? (totalLeft / totalAwarded) * 100 : 0;
             
             return (
               <Card 
@@ -114,6 +127,7 @@ export default function Grants() {
                     <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                       {grant.categories.map((cat, i) => {
                         const remaining = cat.initial - cat.used;
+                        const catPercentRemaining = cat.initial > 0 ? (remaining / cat.initial) * 100 : 0;
                         const percentUsed = cat.initial > 0 ? (cat.used / cat.initial) * 100 : 0;
                         return (
                           <div key={i} className="p-4 rounded-lg bg-muted/30 space-y-3">
@@ -128,7 +142,7 @@ export default function Grants() {
                               <div className="text-xs text-muted-foreground">
                                 {formatCurrency(cat.used)} used
                               </div>
-                              <div className="text-sm text-green-600 dark:text-green-400 font-semibold">
+                              <div className={`text-sm font-semibold ${getBudgetColor(catPercentRemaining)}`}>
                                 {formatCurrency(remaining)} left
                               </div>
                             </div>
@@ -138,7 +152,7 @@ export default function Grants() {
                     </div>
                     
                     {/* Summary Numbers - 1 column on right, vertically centered */}
-                    <div className="lg:col-span-1 p-4 rounded-lg bg-muted/50 flex flex-col justify-center items-center space-y-4 min-h-[180px]">
+                    <div className={`lg:col-span-1 p-4 rounded-lg ${getBudgetBgColor(percentRemaining)} flex flex-col justify-center items-center space-y-3 min-h-[180px]`}>
                       <div className="text-center">
                         <span className="text-xs text-muted-foreground block mb-1">Awarded</span>
                         <span className="text-xl font-bold tabular-nums text-foreground">{formatCurrency(totalAwarded)}</span>
@@ -147,9 +161,9 @@ export default function Grants() {
                         <span className="text-xs text-muted-foreground block mb-1">Used</span>
                         <span className="text-xl font-bold tabular-nums text-red-600 dark:text-red-400">{formatCurrency(totalUsed)}</span>
                       </div>
-                      <div className="text-center border-t border-border pt-3 w-full">
+                      <div className="text-center border-t border-border/50 pt-3 w-full">
                         <span className="text-xs text-muted-foreground block mb-1">Remaining</span>
-                        <span className="text-2xl font-bold tabular-nums text-green-600 dark:text-green-400">{formatCurrency(totalLeft)}</span>
+                        <span className={`text-2xl font-bold tabular-nums ${getBudgetColor(percentRemaining)}`}>{formatCurrency(totalLeft)}</span>
                       </div>
                     </div>
                   </div>
