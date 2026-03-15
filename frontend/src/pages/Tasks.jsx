@@ -292,7 +292,10 @@ export default function Tasks() {
                     <Button
                       variant="ghost"
                       size="icon"
-                      onClick={() => deleteTask(task.studyId, task.id)}
+                      onClick={() => {
+                        setTaskToDelete(task);
+                        setDeleteTaskOpen(true);
+                      }}
                       data-testid={`delete-task-${task.id}`}
                     >
                       <Trash2 className="w-4 h-4 text-destructive" />
@@ -304,6 +307,27 @@ export default function Tasks() {
           )}
         </CardContent>
       </Card>
+
+      {/* Delete Task Confirmation */}
+      <AlertDialog open={deleteTaskOpen} onOpenChange={setDeleteTaskOpen}>
+        <AlertDialogContent data-testid="delete-task-confirm">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Task</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{taskToDelete?.title}" from {taskToDelete?.studyTitle}? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteTask}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
