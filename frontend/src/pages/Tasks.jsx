@@ -266,6 +266,15 @@ export default function Tasks() {
                     >
                       View Study
                     </Button>
+                    
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => deleteTask(task.studyId, task.id)}
+                      data-testid={`delete-task-${task.id}`}
+                    >
+                      <Trash2 className="w-4 h-4 text-destructive" />
+                    </Button>
                   </div>
                 );
               })}
