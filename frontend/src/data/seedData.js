@@ -182,12 +182,11 @@ export const seedStudies = [
     tags: ['Pediatrics', 'Immunology', 'Vaccination'],
     fund: {
       grantBody: 'CDC Foundation',
-      ioCode: 'IO-CDC-2025-0891',
       categories: [
-        { name: 'Manpower', initial: 180000, used: 0 },
-        { name: 'Equipment', initial: 40000, used: 0 },
-        { name: 'Consumables', initial: 60000, used: 0 },
-        { name: 'Travel', initial: 30000, used: 0 }
+        { name: 'Manpower', ioCode: 'IO-CDC-MP-0891', initial: 180000, used: 0 },
+        { name: 'Equipment', ioCode: 'IO-CDC-EQ-0892', initial: 40000, used: 0 },
+        { name: 'Miscellaneous', ioCode: 'IO-CDC-MS-0893', initial: 60000, used: 0 },
+        { name: 'Travel', ioCode: 'IO-CDC-TR-0894', initial: 30000, used: 0 }
       ]
     },
     recruitment: {
@@ -234,12 +233,11 @@ export const seedStudies = [
     tags: ['Geriatrics', 'Orthopedics', 'Exercise Medicine'],
     fund: {
       grantBody: 'Arthritis Foundation',
-      ioCode: 'IO-AF-2024-5567',
       categories: [
-        { name: 'Manpower', initial: 120000, used: 45000 },
-        { name: 'Equipment', initial: 25000, used: 20000 },
-        { name: 'Consumables', initial: 20000, used: 8000 },
-        { name: 'Travel', initial: 15000, used: 3000 }
+        { name: 'Manpower', ioCode: 'IO-AF-MP-5567', initial: 120000, used: 45000 },
+        { name: 'Equipment', ioCode: 'IO-AF-EQ-5568', initial: 25000, used: 20000 },
+        { name: 'Miscellaneous', ioCode: 'IO-AF-MS-5569', initial: 20000, used: 8000 },
+        { name: 'Travel', ioCode: 'IO-AF-TR-5570', initial: 15000, used: 3000 }
       ]
     },
     recruitment: {
