@@ -398,19 +398,22 @@ export default function AllStudies() {
   const { studies, addStudy, deleteStudy } = useData();
   
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [addStudyOpen, setAddStudyOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [studyToDelete, setStudyToDelete] = useState(null);
-  
-  const statusFilter = searchParams.get('status') || 'all';
 
-  const setStatusFilter = (value) => {
-    if (value === 'all') {
-      searchParams.delete('status');
-    } else {
-      searchParams.set('status', value);
-    }
-    setSearchParams(searchParams);
+  const toggleStatus = (status) => {
+    setSelectedStatuses(prev => 
+      prev.includes(status) 
+        ? prev.filter(s => s !== status)
+        : [...prev, status]
+    );
+  };
+
+  const clearFilters = () => {
+    setSelectedStatuses([]);
+    setSearchQuery('');
   };
 
   const filteredStudies = useMemo(() => {
@@ -421,11 +424,12 @@ export default function AllStudies() {
         study.pi.toLowerCase().includes(searchQuery.toLowerCase()) ||
         study.ecosRef.toLowerCase().includes(searchQuery.toLowerCase());
       
-      const matchesStatus = statusFilter === 'all' || study.status === statusFilter;
+      // If no statuses selected, show all
+      const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(study.status);
       
       return matchesSearch && matchesStatus;
     });
-  }, [studies, searchQuery, statusFilter]);
+  }, [studies, searchQuery, selectedStatuses]);
 
   const statusCounts = useMemo(() => {
     return studies.reduce((acc, study) => {
