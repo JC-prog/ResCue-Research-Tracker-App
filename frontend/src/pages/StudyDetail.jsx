@@ -1098,10 +1098,20 @@ export default function StudyDetail() {
             <p className="text-muted-foreground mt-1">{study.ecosRef}</p>
           </div>
         </div>
-        <Button variant="outline" onClick={() => setHistoryOpen(true)} data-testid="history-btn">
-          <History className="w-4 h-4 mr-2" />
-          History
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => setHistoryOpen(true)} data-testid="history-btn">
+            <History className="w-4 h-4 mr-2" />
+            History
+          </Button>
+          <Button 
+            variant="destructive" 
+            onClick={() => setDeleteStudyOpen(true)} 
+            data-testid="delete-study-btn"
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Delete Study
+          </Button>
+        </div>
       </div>
 
       {/* Study Information Section */}
