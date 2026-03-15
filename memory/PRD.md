@@ -28,15 +28,15 @@ Build ResCue, a professional, hospital-grade research management dashboard with 
 - Dark/Light theme toggle
 - JSON Export/Import for data backup
 
-## What's Been Implemented (Jan 15, 2026)
+## What's Been Implemented (Mar 15, 2026)
 
 ### Pages
 - [x] Dashboard - 4 metric cards, recent studies grid, priority tasks list
-- [x] All Studies - Search filter, status dropdown, status badge counts
-- [x] Grants - Financial summary cards, detailed grants table
+- [x] All Studies - Search filter, status dropdown, status badge counts, Add Study modal
+- [x] Grants - Horizontal bar charts for fund categories, summary panel with budget colors
 - [x] Publications - Type filter, publication list with links
 - [x] Tasks - Priority sorting, completion toggle, overdue indicators
-- [x] Study Detail - 7 collapsible sections with edit modals
+- [x] Study Detail - 7 collapsible sections with edit modals, Timer icons on expiry badges
 
 ### Features
 - [x] localStorage persistence
@@ -45,12 +45,15 @@ Build ResCue, a professional, hospital-grade research management dashboard with 
 - [x] Audit trail with change reason prompts
 - [x] History modal for version viewing
 - [x] 5 seed studies (Optomed, VR Rehab, NeuroShield, PedVax, FLEX)
-- [x] Interactive charts (Recharts - Bar, Pie)
-- [x] IRB/Grant expiry badges (Green > 60 days, Yellow < 60 days, Red < 30 days)
+- [x] Interactive charts (Recharts - Bar, Pie, Horizontal Bar)
+- [x] IRB/Grant expiry badges with Timer icons (Green > 60 days, Yellow < 60 days, Red < 30 days)
 - [x] Multi-site recruitment tracking
 - [x] Demographics with gender/ethnicity pie charts
 - [x] Team member management
 - [x] Tag management
+- [x] Optional grant section in Add Study modal
+- [x] Free-text Phase field input
+- [x] "Not Applicable" display for studies without grants
 
 ### Components
 - Layout with sidebar navigation
@@ -88,8 +91,16 @@ Build ResCue, a professional, hospital-grade research management dashboard with 
 - Comments/notes system
 - Role-based access (if auth added later)
 
+## Completed Tasks (Mar 15, 2026)
+- [x] Add Study modal with optional grant section
+- [x] Free-text Phase field (no longer a dropdown)
+- [x] Timer icons on IRB and Grant expiry date badges
+- [x] "Not Applicable" for Grant Approval Period when no funds exist
+- [x] Horizontal bar chart on Grants page replacing category cards
+- [x] Removed colored background from Grants summary panel
+
 ## Next Tasks
-1. Add study creation functionality (Add Study button)
-2. Add publication creation modal
-3. Implement CSV export for grants/tasks
-4. Add notification system for expiring IRB/grants
+1. User/Role-Based Access Control - Implement login system with permissions
+2. Notifications - Email or in-app alerts for expiring grants and overdue tasks
+3. Export functionality - CSV/PDF export for studies, grants, tasks
+4. Budget forecasting - Predict budget depletion based on burn rate
