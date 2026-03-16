@@ -32,7 +32,7 @@ Data is persisted in `db.json` via json-server, a local REST API that reads and 
 
 ## Backing Up the Database
 
-**Option 1 — Copy the file directly (recommended)**
+**Option 1 - Copy the file directly (recommended)**
 
 Stop the server first, then copy `db.json` to a safe location:
 
@@ -48,11 +48,11 @@ cp db.backup.json db.json
 
 > Copying while json-server is running is safe for a quick snapshot, but stopping the server first avoids any mid-write inconsistency.
 
-**Option 2 — Export via the app UI**
+**Option 2 - Export via the app UI**
 
 Use the Export button in the sidebar to download the current data as a JSON file. Use Import to restore from a previously exported file.
 
-**Option 3 — Fetch via the API**
+**Option 3 - Fetch via the API**
 
 While json-server is running, you can dump the raw data with curl:
 
